@@ -36,3 +36,12 @@ slprj/
 *.fls
 *.fdb_latexmk
 *.synctex.gz
+
+# Derleme artiklari
+*.exe
+*.o
+*.obj
+build/
+managed_components/
+dependencies.lock
+samples.csv
