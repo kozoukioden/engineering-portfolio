@@ -1,0 +1,15 @@
+menu "Energy analyzer node configuration"
+
+    config PMNODE_WIFI_SSID
+        string "Wi-Fi SSID"
+        default "myssid"
+        help
+            SSID of the network the Modbus TCP server joins.
+
+    config PMNODE_WIFI_PASS
+        string "Wi-Fi password"
+        default "mypassword"
+        help
+            WPA2 password for the Wi-Fi network.
+
+endmenu

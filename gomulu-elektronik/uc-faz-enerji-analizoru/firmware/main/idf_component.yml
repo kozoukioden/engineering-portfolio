@@ -1,0 +1,4 @@
+## Managed component dependencies (ESP-IDF Component Manager)
+dependencies:
+  idf: ">=5.1"
+  espressif/esp-modbus: "^1.0.15"
