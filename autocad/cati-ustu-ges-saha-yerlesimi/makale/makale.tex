@@ -28,9 +28,8 @@ string from the low-temperature open-circuit voltage limit of the inverter, chec
 power point tracking (MPPT) window at high cell temperature, and sizes the inter-row spacing from
 the winter-solstice shading geometry at latitude 37$^\circ$. Twenty modules per string keep the
 cold-string voltage at 1084~V, safely below the 1100~V inverter input ceiling, and ten strings
-give a DC/AC ratio of 1.10. The results are expressed as two CAD sheets---a site layout and a
-low-voltage single-line diagram---generated programmatically so that every dimension traces back
-to the stated parameters.
+give a DC/AC ratio of 1.10. The results are captured as two dimensioned CAD sheets---a site
+layout and a low-voltage single-line diagram---drawn to the sizing above.
 \end{abstract}
 
 \section{Introduction}
@@ -102,10 +101,10 @@ $p_{min}=b+d=1.61$~m. A pitch of 3.0~m was adopted to add a maintenance walkway.
 
 \section{Results}
 The array is organised as ten strings of twenty modules (200 modules, 110.0~kWp), which against
-the 100~kW inverter gives a DC/AC ratio of 1.10. Figure~\ref{fig:layout} shows the generated site
-plan: the ten colour-coded strings, the DC collection bus feeding the inverter and the AG
-distribution panel, the perimeter earthing ring with corner electrodes, and the dimensioned roof
-outline with the title block.
+the 100~kW inverter gives a DC/AC ratio of 1.10. Figure~\ref{fig:layout} shows the site plan: the
+ten colour-coded strings, the DC collection bus feeding the inverter and the AG distribution panel,
+the perimeter earthing ring with corner electrodes, and the dimensioned roof outline with the title
+block.
 
 \begin{figure}[h]
 \centering
@@ -127,9 +126,9 @@ $I_{ac}=100\,000/(\sqrt{3}\cdot400\cdot0.98)\approx147$~A.
 \label{fig:sld}
 \end{figure}
 
-Table~\ref{tab:results} summarises the sizing outcome. Every value in the drawings is derived from
-the parameters in Table~\ref{tab:params}; changing a parameter in the generating script updates the
-sheets consistently.
+Table~\ref{tab:results} summarises the sizing outcome. Every value in the drawings follows from the
+parameters in Table~\ref{tab:params}, so the layout and the single-line diagram stay consistent
+with one another.
 
 \begin{table}[h]
 \centering

@@ -2,7 +2,8 @@
 
 Bir sanayi yapısının düz çatısına kurulacak **110,0 kWp** gücünde, şebeke bağlantılı
 fotovoltaik (PV) santralinin saha yerleşim planı ve alçak gerilim (AG) tek hat şeması.
-Çizimler `ezdxf` ile programatik olarak (`.dxf`) üretilir; nanoCAD / AutoCAD / LibreCAD'de açılır.
+Çizimler **DWG** (AutoCAD 2000 / AC1015) formatındadır; AutoCAD, nanoCAD, BricsCAD vb. ile açılır.
+Ölçülendirmeler gerçek **DIMENSION** varlıklarıdır (CAD'de ölçeklenir/düzenlenir).
 
 Çizen: **Hakan OĞUZ — Elektrik Elektronik Mühendisi**
 
@@ -16,8 +17,8 @@ paftaya dökmektir:
 
 | Pafta | Dosya | İçerik |
 |------|-------|--------|
-| GES-01 | `ges-saha-yerlesimi.dxf` | Çatı sınırı, 10 string panel yerleşimi, DC bara, inverter + AG pano, topraklama ringi, ölçüler, lejant, antet |
-| GES-02 | `ges-tek-hat-semasi.dxf` | String → DC toplama (sigorta/SPD/ayırıcı) → inverter → AC kesici → çift yönlü sayaç → AG pano → şebeke |
+| GES-01 | `ges-saha-yerlesimi.dwg` | Çatı sınırı, 10 string panel yerleşimi, DC bara, inverter + AG pano, topraklama ringi, **ölçülendirme (DIMENSION)**, lejant, antet |
+| GES-02 | `ges-tek-hat-semasi.dwg` | String → DC toplama (sigorta/SPD/ayırıcı) → inverter → AC kesici → çift yönlü sayaç → AG pano → şebeke |
 
 ## Sistem bileşenleri ve kabuller
 
@@ -121,7 +122,7 @@ ile irtibatlandırılır. Modül çerçeveleri ve taşıyıcı konstrüksiyon ko
 eşpotansiyel baraya bağlanır. Yaklaşım IEC 62305 (yıldırımdan korunma) ve IEC 60364-7-712
 (PV tesisatları) ile uyumludur.
 
-## DXF katman düzeni
+## Katman düzeni
 
 | Katman | Renk | İçerik |
 |---|---|---|
@@ -134,22 +135,15 @@ eşpotansiyel baraya bağlanır. Yaklaşım IEC 62305 (yıldırımdan korunma) v
 | OLCU | gri | Ölçülendirme |
 | YAZI / LEJANT / ANTET | — | Metin, lejant, başlık bloğu |
 
-## Üretim / yeniden oluşturma
+## Dosyalar
 
-```bash
-pip install ezdxf matplotlib
-python src/ges_ciz.py
-```
+- `ges-saha-yerlesimi.dwg` — GES-01 saha yerleşim planı (antetli, ölçülendirilmiş)
+- `ges-tek-hat-semasi.dwg` — GES-02 AG tek hat şeması (antetli)
+- `sekiller/saha-yerlesimi.png`, `sekiller/tek-hat-semasi.png` — önizleme görüntüleri
+- `makale/makale.pdf` — tasarımı ve çıktıları özetleyen kısa akademik makale (İngilizce)
 
-Script iki `.dxf` paftayı ve `sekiller/` altındaki iki PNG önizlemeyi üretir. Parametreler
-(modül, string sayısı, pitch, çatı ölçüsü) `src/ges_ciz.py` başındaki sabitlerden değiştirilebilir.
-
-## Çıktılar
-
-- `ges-saha-yerlesimi.dxf` — GES-01 saha yerleşim planı (antetli)
-- `ges-tek-hat-semasi.dxf` — GES-02 AG tek hat şeması (antetli)
-- `sekiller/saha-yerlesimi.png`, `sekiller/tek-hat-semasi.png` — önizlemeler
-- `makale/makale.pdf` — çıktıları özetleyen kısa akademik makale (İngilizce)
+Paftalar DWG (AC1015) olduğundan doğrudan AutoCAD/nanoCAD/BricsCAD'de açılıp düzenlenebilir;
+katmanlar, antet ve ölçülendirme korunur.
 
 ![AG tek hat şeması](sekiller/tek-hat-semasi.png)
 

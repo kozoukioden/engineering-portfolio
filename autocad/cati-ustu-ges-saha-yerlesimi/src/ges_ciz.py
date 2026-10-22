@@ -174,9 +174,30 @@ def saha_plani():
         msp.add_line((kx - 250, ky - 250), (kx + 250, ky + 250), dxfattribs={"layer": "TOPRAKLAMA"})
     yazi(msp, "TOPRAKLAMA RINGI (Cu 50mm2) + KAZIK", gx0, gy1 + 300, h=360, layer="TOPRAKLAMA")
 
-    # olculer
-    olcu_yatay(msp, 0, CATI_W, CATI_D + 300, "50000 (catı)")
-    olcu_yatay(msp, ARRAY_X0, ARRAY_X0 + array_w, ARRAY_Y0 - 2200, "%.0f (dizge genisligi)" % array_w)
+    # olculendirme - gercek DIMENSION varliklari (nanoCAD/AutoCAD'de duzenlenebilir)
+    arr_top = ARRAY_Y0 + (STRING_SAYI - 1) * SIRA_PITCH + MODUL_D
+    dovr = {"dimtxt": 650, "dimasz": 450, "dimexe": 300, "dimexo": 500,
+            "dimgap": 250, "dimdec": 0, "dimtad": 1, "dimlfac": 1.0}
+
+    def L(p1, p2, base, ang=0):
+        d = msp.add_linear_dim(base=base, p1=p1, p2=p2, angle=ang,
+                               dimstyle="EZDXF", override=dovr,
+                               dxfattribs={"layer": "OLCU"})
+        d.render()
+
+    L((0, 0), (CATI_W, 0), (0, -1800))                                       # catı eni
+    L((0, 0), (0, CATI_D), (-1800, 0), ang=90)                               # catı boyu
+    L((ARRAY_X0, arr_top), (ARRAY_X0 + array_w, arr_top),
+      (ARRAY_X0, arr_top + 1700))                                            # dizge eni
+    L((ARRAY_X0 + array_w, ARRAY_Y0), (ARRAY_X0 + array_w, arr_top),
+      (ARRAY_X0 + array_w + 2000, 0), ang=90)                               # dizge boyu
+    L((ARRAY_X0 + array_w, ARRAY_Y0 + MODUL_D),
+      (ARRAY_X0 + array_w, ARRAY_Y0 + SIRA_PITCH + MODUL_D),
+      (ARRAY_X0 + array_w + 4400, 0), ang=90)                               # sira araligi (pitch)
+    yazi(msp, "MODUL: 2278 x 1134 mm (550 Wp)", 14000, -3800, h=500, layer="OLCU")
+    yazi(msp, "TOPLAM: 200 modul = 110.0 kWp", 14000, -4900, h=500, layer="OLCU")
+    yazi(msp, "SIRA ARALIGI (PITCH): 3000 mm", ARRAY_X0 + array_w + 5200, ARRAY_Y0 + 6000,
+         h=400, layer="OLCU", rot=90)
 
     kuzey_oku(msp, CATI_W - 2500, CATI_D - 3500)
 

@@ -45,3 +45,9 @@ build/
 managed_components/
 dependencies.lock
 samples.csv
+
+# yerel uretim araclari (repoya girmez) + ara formatlar
+_tools/
+*.dxf
+*.kicad_prl
+autocad/**/src/
