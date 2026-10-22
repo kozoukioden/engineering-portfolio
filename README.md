@@ -14,6 +14,13 @@ engineering reasoning behind the design, how to run or simulate it, and the resu
 - **matlab-simulink/** — Modeling & simulation: motors, power electronics, energy systems, control, robotics.
 - **plc/** — Industrial automation: IEC 61131-3 Structured Text (OpenPLC).
 
+## Projects
+
+| Project | Area | Summary |
+|---|---|---|
+| [110 kWp Rooftop Grid-Tied PV — Layout & SLD](autocad/cati-ustu-ges-saha-yerlesimi) | AutoCAD/DXF | Parameter-driven site layout and single-line diagram (ezdxf); string sizing, MPPT window and shading pitch calculations. |
+| [Three-Phase Energy Analyzer Node](gomulu-elektronik/uc-faz-enerji-analizoru) | Embedded (ESP32) | True-RMS / power / PF / THD DSP core over Modbus TCP; firmware core validated on host against a numpy reference. |
+
 ## About
 
 **Hakan OĞUZ** — Electrical & Electronics Engineer
