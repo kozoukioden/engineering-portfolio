@@ -26,3 +26,13 @@ notlar-*.md
 Thumbs.db
 *.asv
 slprj/
+
+# LaTeX ara dosyalari (makale .tex ve .pdf PUSH EDILIR, bunlar edilmez)
+*.aux
+*.out
+*.toc
+*.bbl
+*.blg
+*.fls
+*.fdb_latexmk
+*.synctex.gz
