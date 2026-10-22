@@ -6,8 +6,9 @@
  * Desc   : Acquires 3-phase voltage/current via the ADC, computes per-phase RMS, power,
  *          power factor and THD with the power_metrics core, and serves the results over
  *          Modbus TCP (input registers). Designed for ESP-IDF v5.x. The analogue front end
- *          is a resistive divider for voltage and a current transformer with burden for
- *          current; the scale factors below map ADC counts back to volts and amperes.
+ *          is a voltage transformer (ZMPT101B) for voltage and a current transformer with
+ *          burden for current; the scale factors below map ADC counts back to volts and amperes.
+ *          See donanim/analizor.kicad_sch for the full schematic.
  *
  * NOTE: The DSP core (power_metrics.c) is validated on the host (see ../sim). This firmware
  *       is at design/bring-up level; it has not been flashed to physical hardware.

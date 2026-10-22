@@ -70,9 +70,22 @@ Bu, harmonik başına tek bir DFT bini hesaplamaya eşdeğerdir (Goertzel mantı
                          SCADA / PLC / izleme yazılımı
 ```
 
-Analog ön uç: gerilim için **dirençli bölücü** (orta-raya kaydırılmış, 11 dB zayıflatma ile
-0–3,3 V'a oturtulmuş), akım için **akım trafosu (CT) + burden direnci**. ADC ham sayımları,
-`app_main.c` içindeki `V_SCALE`/`I_SCALE` kalibrasyon katsayılarıyla gerçek birimlere çevrilir.
+Analog ön uç: gerilim için **gerilim trafosu (ZMPT101B)**, akım için **akım trafosu (CT / SCT-013)**;
+her ikisi de orta-rayda (VREF = 3V3/2) biaslanıp RC anti-alias filtreden geçerek ADC'ye verilir.
+ADC ham sayımları, `app_main.c` içindeki `V_SCALE`/`I_SCALE` kalibrasyon katsayılarıyla gerçek
+birimlere çevrilir.
+
+## Devre şeması (KiCad)
+
+Üç fazlı ölçüm ön-ucunun tam şeması `donanim/analizor.kicad_sch` içinde (KiCad 10). ERC temiz
+(0 ihlal). 3 gerilim + 3 akım kanalı, VREF bias üreteci, AMS1117-3.3 regülatör, ESP32-WROOM-32 ve
+UART/boot programlama başlığından oluşur; ADC pin ataması firmware ile birebir aynıdır
+(VA=IO36, IA=IO39, VB=IO34, IB=IO35, VC=IO32, IC=IO33).
+
+![Devre şeması](donanim/sema.png)
+
+Dosyalar: `analizor.kicad_sch` (şema), `analizor.kicad_pro` (proje), `analizor.pdf` (baskı),
+`analizor-bom.csv` (malzeme listesi). Doğrudan KiCad'de açılıp düzenlenebilir.
 
 ## Modbus TCP register haritası (giriş register'ları, uint16)
 
@@ -133,6 +146,7 @@ ve THD değerleri enjekte edilen harmonik içerikle **analitik olarak** birebir 
 ## Dosya düzeni
 
 ```
+donanim/                   KiCad 10 devre şeması (analizor.kicad_sch/.pro/.pdf + BOM)
 firmware/
   main/app_main.c          ADC + Modbus + ölçüm görevi
   main/net_connect.c/.h    Wi-Fi istasyon getirme
