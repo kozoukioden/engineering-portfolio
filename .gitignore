@@ -1,0 +1,28 @@
+# Kişisel / gizli — ASLA commit edilmez
+.env
+*.key
+*_secret*
+CV_HakanOGUZ.pdf
+Mühendislik Kariyeri ve Kriz Yönetimi.pdf
+_referans/
+
+# Python
+__pycache__/
+*.pyc
+.venv/
+venv/
+*.egg-info/
+
+# Meta / iç dosyalar (proje koduyla ilgisi yok)
+PORTFOY-URETIM-KILAVUZU.md
+onay-*.md
+plan-*.md
+notlar-*.md
+
+# Geçici / sistem
+*.tmp
+*.log
+.DS_Store
+Thumbs.db
+*.asv
+slprj/
