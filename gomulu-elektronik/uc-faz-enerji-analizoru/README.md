@@ -87,6 +87,22 @@ UART/boot programlama başlığından oluşur; ADC pin ataması firmware ile bir
 Dosyalar: `analizor.kicad_sch` (şema), `analizor.kicad_pro` (proje), `analizor.pdf` (baskı),
 `analizor-bom.csv` (malzeme listesi). Doğrudan KiCad'de açılıp düzenlenebilir.
 
+## PCB (2 katman)
+
+Şemadan türetilen 2 katmanlı baskı devre kartı `donanim/analizor.kicad_pcb` içindedir. Yerleşim
+işlevsel kümelere göre yapılmış (ESP32 merkezde, gerilim/akım kanalları çevrede, bağlantılar
+kenarlarda), yönlendirme tamamlanmış ve iki tarafta **GND bakır dökümü** eklenmiştir. **DRC temiz
+(0 ihlal).** Kart 124 × 104 mm, köşelerde M3 montaj delikleri; ESP32-WROOM anten keepout alanı
+bakırsız bırakılmıştır.
+
+![PCB 3B görünüm](donanim/pcb-3d.png)
+
+![PCB katmanlar](donanim/pcb-katmanlar.png)
+
+Üretime hazır **Gerber + delik (Excellon)** dosyaları `donanim/fabrikasyon/` altındadır
+(F.Cu, B.Cu, maske, pasta, ipek baskı, Edge.Cuts, `.drl`, `.gbrjob`). Kart KiCad 10'da açılıp
+düzenlenebilir.
+
 ## Modbus TCP register haritası (giriş register'ları, uint16)
 
 Her faz 8 register: `Vrms×10`, `Irms×100`, `P`, `S`, `Q`, `PF×1000`, `THDv×1000`, `THDi×1000`.
@@ -146,7 +162,8 @@ ve THD değerleri enjekte edilen harmonik içerikle **analitik olarak** birebir 
 ## Dosya düzeni
 
 ```
-donanim/                   KiCad 10 devre şeması (analizor.kicad_sch/.pro/.pdf + BOM)
+donanim/                   KiCad 10 tasarımı: şema (.kicad_sch/.pro/.pdf+BOM), PCB (.kicad_pcb),
+                           renderlar (pcb-3d/pcb-katmanlar/sema .png), fabrikasyon/ (Gerber+drill)
 firmware/
   main/app_main.c          ADC + Modbus + ölçüm görevi
   main/net_connect.c/.h    Wi-Fi istasyon getirme

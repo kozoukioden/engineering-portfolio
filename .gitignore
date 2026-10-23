@@ -51,3 +51,8 @@ _tools/
 *.dxf
 *.kicad_prl
 autocad/**/src/
+
+# PCB ara dosyalari
+*.dsn
+*.ses
+x.kicad_*
