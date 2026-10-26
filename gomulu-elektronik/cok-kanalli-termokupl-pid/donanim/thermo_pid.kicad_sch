@@ -1,0 +1,33 @@
+(kicad_sch
+	(version 20251020)
+	(generator "eeschema")
+	(generator_version "10.0")
+	(uuid "c31a0567-36ac-4c21-b7de-e3b109a07bc6")
+	(paper "A4")
+	(title_block
+		(title "Çok Kanallı Termokupl ve Anti-Windup PID Denetleyici")
+		(date "2026-10-26")
+		(rev "1.0")
+		(company "Hakan OĞUZ - Elektrik Elektronik Mühendisi")
+	)
+	(lib_symbols
+		(symbol "Device:R"
+			(pin_numbers (hide yes))
+			(pin_names (offset 0))
+			(exclude_from_sim no)(in_bom yes)(on_board yes)
+			(property "Reference" "R" (at 2.032 0 90)(effects (font (size 1.27 1.27))))
+			(property "Value" "R" (at 0 0 90)(effects (font (size 1.27 1.27))))
+			(symbol "R_0_1"
+				(rectangle (start -1.016 -2.54) (end 1.016 2.54)(stroke (width 0.254))(fill (type none)))
+			)
+			(symbol "R_1_1"
+				(pin passive line (at 0 3.81 270)(length 1.27)(name "")(number "1"))
+				(pin passive line (at 0 -3.81 90)(length 1.27)(name "")(number "2"))
+			)
+		)
+	)
+	(text "4x MAX31856 SPI K-TIPI TERMOKUPL ENTEGRESI" (at 25 25 0)(effects (font (size 2.5 2.5)(bold yes))))
+	(text "SPI Bus: SCK (GPIO18), MISO (GPIO19), MOSI (GPIO23)" (at 25 35 0)(effects (font (size 2.0 2.0))))
+	(text "Chip Select Hatlari: CS0(IO15), CS1(IO16), CS2(IO17), CS3(IO4)" (at 25 45 0)(effects (font (size 2.0 2.0))))
+	(text "Isitici Surucu Katı: Optokuplor + SSR / MOSFET PWM Surucu (GPIO2)" (at 25 55 0)(effects (font (size 2.0 2.0))))
+)
