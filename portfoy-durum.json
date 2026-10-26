@@ -1,11 +1,15 @@
 {
-  "sonraki_gun": 1,
-  "elektronik_alt_dongu": 2,
+  "sonraki_gun": 2,
+  "elektronik_alt_dongu": 4,
   "matlab_simulink_alt_dongu": 2,
   "plc_sayac": 1,
   "makale_bekliyor": [
     "matlab-simulink/sebeke-baglantili-lcl-evirici",
-    "matlab-simulink/manipulator-kinematik-yorunge"
+    "matlab-simulink/manipulator-kinematik-yorunge",
+    "autocad/isletme-kuvvetli-akim-sld",
+    "autocad/bina-topraklama-ve-yildirimsavar",
+    "gomulu-elektronik/can-twai-sensor-dugumu",
+    "gomulu-elektronik/cok-kanalli-termokupl-pid"
   ],
   "gecmis": [
     {
@@ -33,7 +37,7 @@
       "alt_konu": "güç elektroniği ve şebeke kontrolü (Simulink)",
       "baslik": "Şebeke Bağlantılı 10 kW LCL Evirici dq Vektör Kontrolü ve Rezonans Sönümleme",
       "repo_yol": "matlab-simulink/sebeke-baglantili-lcl-evirici",
-      "commit": ""
+      "commit": "f65fc8c"
     },
     {
       "tarih": "2026-10-26",
@@ -42,6 +46,42 @@
       "alt_konu": "robotik manipülatör kinematiği (Simulink)",
       "baslik": "6-DOF Endüstriyel Manipülatör Kinematiği ve Spline Yörünge Planlama",
       "repo_yol": "matlab-simulink/manipulator-kinematik-yorunge",
+      "commit": "f65fc8c"
+    },
+    {
+      "tarih": "2026-10-26",
+      "gun": 1,
+      "kategori": "autocad",
+      "alt_konu": "kuvvetli akım ve AG dağıtım (AutoCAD/DXF)",
+      "baslik": "Küçük İşletme Kuvvetli Akım Tek-Hat Şeması (SLD) ve Pano Yerleşimi",
+      "repo_yol": "autocad/isletme-kuvvetli-akim-sld",
+      "commit": ""
+    },
+    {
+      "tarih": "2026-10-26",
+      "gun": 1,
+      "kategori": "autocad",
+      "alt_konu": "topraklama ve yıldırımdan korunma LPS (AutoCAD/DXF)",
+      "baslik": "Bina Temel/Ring Topraklama ve Yıldırımdan Korunma (LPS) Planı",
+      "repo_yol": "autocad/bina-topraklama-ve-yildirimsavar",
+      "commit": ""
+    },
+    {
+      "tarih": "2026-10-26",
+      "gun": 1,
+      "kategori": "gomulu-elektronik",
+      "alt_konu": "endüstriyel haberleşme CAN/TWAI (ESP32)",
+      "baslik": "CAN (TWAI) Tabanlı Dağıtık Sensör Düğümü",
+      "repo_yol": "gomulu-elektronik/can-twai-sensor-dugumu",
+      "commit": ""
+    },
+    {
+      "tarih": "2026-10-26",
+      "gun": 1,
+      "kategori": "gomulu-elektronik",
+      "alt_konu": "enstrümantasyon ve proses kontrolü (ESP32)",
+      "baslik": "Çok Kanallı Termokupl Veri Toplama ve Anti-Windup PID Isı Kontrolü",
+      "repo_yol": "gomulu-elektronik/cok-kanalli-termokupl-pid",
       "commit": ""
     }
   ]
