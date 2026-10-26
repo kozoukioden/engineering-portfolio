@@ -1,7 +1,48 @@
 {
   "sonraki_gun": 1,
-  "elektronik_alt_dongu": 1,
-  "matlab_simulink_alt_dongu": 1,
+  "elektronik_alt_dongu": 2,
+  "matlab_simulink_alt_dongu": 2,
   "plc_sayac": 1,
-  "gecmis": []
+  "makale_bekliyor": [
+    "matlab-simulink/sebeke-baglantili-lcl-evirici",
+    "matlab-simulink/manipulator-kinematik-yorunge"
+  ],
+  "gecmis": [
+    {
+      "tarih": "2026-10-22",
+      "gun": 1,
+      "kategori": "autocad",
+      "alt_konu": "elektrik tesisat / yenilenebilir enerji (GES)",
+      "baslik": "110 kWp Çatı Üstü Şebeke Bağlantılı GES - Saha Yerleşimi ve AG Tek Hat Şeması",
+      "repo_yol": "autocad/cati-ustu-ges-saha-yerlesimi",
+      "commit": "24ffac0"
+    },
+    {
+      "tarih": "2026-10-22",
+      "gun": 1,
+      "kategori": "gomulu-elektronik",
+      "alt_konu": "gömülü sistemler (ESP32)",
+      "baslik": "Üç Fazlı Enerji Analizörü Düğümü (ESP32/ESP-IDF, Modbus TCP, THD)",
+      "repo_yol": "gomulu-elektronik/uc-faz-enerji-analizoru",
+      "commit": "c865ef4"
+    },
+    {
+      "tarih": "2026-10-26",
+      "gun": 2,
+      "kategori": "matlab-simulink",
+      "alt_konu": "güç elektroniği ve şebeke kontrolü (Simulink)",
+      "baslik": "Şebeke Bağlantılı 10 kW LCL Evirici dq Vektör Kontrolü ve Rezonans Sönümleme",
+      "repo_yol": "matlab-simulink/sebeke-baglantili-lcl-evirici",
+      "commit": ""
+    },
+    {
+      "tarih": "2026-10-26",
+      "gun": 2,
+      "kategori": "matlab-simulink",
+      "alt_konu": "robotik manipülatör kinematiği (Simulink)",
+      "baslik": "6-DOF Endüstriyel Manipülatör Kinematiği ve Spline Yörünge Planlama",
+      "repo_yol": "matlab-simulink/manipulator-kinematik-yorunge",
+      "commit": ""
+    }
+  ]
 }
