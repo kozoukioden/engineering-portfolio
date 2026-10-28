@@ -13,7 +13,11 @@
     "autocad/misir-isleme-mcc-vfd",
     "gomulu-elektronik/esp32-kestirimci-bakim",
     "matlab-simulink/li-ion-2rc-ekf-soc",
-    "haberlesme/rfid-125khz-em4100-okuyucu"
+    "haberlesme/rfid-125khz-em4100-okuyucu",
+    "autocad/sarj-otoparki-dagitim",
+    "gomulu-elektronik/rpi-kenar-ag-gecidi",
+    "matlab-simulink/ev-pmsm-foc-surucu",
+    "haberlesme/esp32-ble-rssi-imu-ekf"
   ],
   "gecmis": [
     {
@@ -122,6 +126,42 @@
       "alt_konu": "RFID ve RF ön uç tasarımı (Donanım/Firmware)",
       "baslik": "125 kHz EM4100 RFID Okuyucu ve Manchester Kod Çözücü",
       "repo_yol": "haberlesme/rfid-125khz-em4100-okuyucu",
+      "commit": ""
+    },
+    {
+      "tarih": "2026-10-28",
+      "gun": 2,
+      "kategori": "autocad",
+      "alt_konu": "elektrikli araç şarj altyapısı ve trafo dağıtımı (AutoCAD/DWG)",
+      "baslik": "Elektrikli Araç Otoparkı Dağıtım Sistemi ve Dinamik Yük Yönetimi",
+      "repo_yol": "autocad/sarj-otoparki-dagitim",
+      "commit": ""
+    },
+    {
+      "tarih": "2026-10-28",
+      "gun": 2,
+      "kategori": "gomulu-elektronik",
+      "alt_konu": "endüstriyel IoT ve kenar bilişim (Raspberry Pi/Python)",
+      "baslik": "Raspberry Pi Endüstriyel Kenar Ağ Geçidi (Modbus, MQTT, SQLite Arabellekleme)",
+      "repo_yol": "gomulu-elektronik/rpi-kenar-ag-gecidi",
+      "commit": ""
+    },
+    {
+      "tarih": "2026-10-28",
+      "gun": 2,
+      "kategori": "matlab-simulink",
+      "alt_konu": "elektrikli araç çekiş motoru FOC kontrolü (Simulink)",
+      "baslik": "Elektrikli Araç PMSM Alan Yönlendirmeli Kontrol (FOC) Sürücü Simülasyonu",
+      "repo_yol": "matlab-simulink/ev-pmsm-foc-surucu",
+      "commit": ""
+    },
+    {
+      "tarih": "2026-10-28",
+      "gun": 2,
+      "kategori": "haberlesme",
+      "alt_konu": "iç mekan konumlandırma ve sensör füzyonu (ESP32/EKF)",
+      "baslik": "ESP32 BLE RSSI + IMU EKF Kapalı Alan Konumlandırma",
+      "repo_yol": "haberlesme/esp32-ble-rssi-imu-ekf",
       "commit": ""
     }
   ]

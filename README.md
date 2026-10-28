@@ -30,6 +30,10 @@ engineering reasoning behind the design, how to run or simulate it, and the resu
 | [ESP32 Predictive Maintenance Node (PdM)](gomulu-elektronik/esp32-kestirimci-bakim) | Embedded (ESP32) | Bearing defect frequency analysis (BPFO/BPFI), Hilbert envelope demodulation, ISO 10816 vibration zones, and MCSA broken rotor bar detection. |
 | [Li-Ion 2RC Battery Modeling & EKF SOC](matlab-simulink/li-ion-2rc-ekf-soc) | MATLAB / Energy | 18650 NMC 2RC Thevenin equivalent circuit model, HPPC pulsed current profile, and Extended Kalman Filter state-of-charge tracking. |
 | [125 kHz EM4100 RFID Reader & Demodulator](haberlesme/rfid-125khz-em4100-okuyucu) | Communications / RF | 125 kHz LC resonant tank driver (Q=65), envelope detector, Manchester decoding C core, and KiCad schematic (.kicad_sch/.pdf). |
+| [EV Charging Hub Distribution & Dynamic Load Management](autocad/sarj-otoparki-dagitim) | AutoCAD / DWG | 20x 22kW AC + 4x 120kW DC fast chargers, 1000 kVA substation, 400x100mm cable tray layout, and DLM scheme (.dwg). |
+| [Raspberry Pi Industrial Edge Gateway](gomulu-elektronik/rpi-kenar-ag-gecidi) | Embedded / Edge | Modbus RTU/TCP telemetry collector, local SQLite store-and-forward buffer, and MQTT cloud bridge with Docker support. |
+| [EV PMSM Field Oriented Control (FOC) Drive](matlab-simulink/ev-pmsm-foc-surucu) | Simulink / Drive | 60 kW permanent magnet synchronous motor dq vector control, MTPA, cascade speed/current PI loops (.slx binary model). |
+| [ESP32 BLE RSSI + IMU Indoor Positioning EKF](haberlesme/esp32-ble-rssi-imu-ekf) | Communications / RF | Log-distance path loss calibration, trilateration, and 4-state Extended Kalman Filter sensor fusion (RMSE: 1.42 m). |
 
 ## About
 
