@@ -38,6 +38,10 @@ engineering reasoning behind the design, how to run or simulate it, and the resu
 | [4th-Order Linkwitz-Riley Active Crossover & Bass Boost](gomulu-elektronik/aktif-crossover-bas-guclendirici) | Electronics / Analog | LR4 80 Hz low-pass, 20 Hz subsonic high-pass, 0-180 deg phase control, +6dB bass boost, KiCad schematic (.pdf/.kicad_sch/.kicad_pcb). |
 | [PV Partial Shading Multi-Peak MPPT & PSO Optimization](matlab-simulink/pv-kismi-golgelenme-mppt) | MATLAB / Energy | 4-module bypass diode analytical multi-peak P-V curve, P&O local trap demonstration, and Particle Swarm Optimization (+32.5% energy gain). |
 | [LoRa-like Chirp Spread Spectrum (CSS) Modem Core](haberlesme/lora-css-modem-matlab) | Communications / RF | From-scratch CSS chirp modulator, dechirp+FFT demodulator, AWGN BER-SNR curves, and 868 MHz Okumura-Hata urban link budget. |
+| [Industrial Plant Lighting (EN 12464-1) & Emergency Route (EN 1838)](autocad/uretim-hali-aydinlatma) | AutoCAD / DWG | 60x24m factory hall 500 lux point-by-point lumen method, uniformity U0=0.74, 3h battery emergency exit routes, and AYP panel (.dwg). |
+| [ESP32 12-Step Automatic Power Factor Controller (APFC)](gomulu-elektronik/esp32-kompanzasyon-rolesi) | Embedded / Power | 12-stage capacitor bank, rotational equal wear leveling, harmonic resonance detection (THD-V > 5%), and contactor lifecycle counter. |
+| [6-DOF Quadrotor Flight Dynamics & Cascade PID Control](matlab-simulink/quadrotor-6dof-dinamik) | Simulink / Robotics | 6-DOF Newton-Euler flight model, inner attitude PD + outer position PID, wind gust rejection, and motor saturation (.slx binary model). |
+| [2.45 GHz Microstrip Patch & Smart Antenna MVDR Beamforming](haberlesme/anten-dizisi-huzme-yonlendirme) | Communications / RF | Inset-fed microstrip patch analytical design, 8-element ULA array factor, Dolph-Chebyshev SLL, and MVDR -60 dB adaptive jammer nulling. |
 
 ## About
 

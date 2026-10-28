@@ -21,7 +21,11 @@
     "autocad/kompakt-trafo-merkezi",
     "gomulu-elektronik/aktif-crossover-bas-guclendirici",
     "matlab-simulink/pv-kismi-golgelenme-mppt",
-    "haberlesme/lora-css-modem-matlab"
+    "haberlesme/lora-css-modem-matlab",
+    "autocad/uretim-hali-aydinlatma",
+    "gomulu-elektronik/esp32-kompanzasyon-rolesi",
+    "matlab-simulink/quadrotor-6dof-dinamik",
+    "haberlesme/anten-dizisi-huzme-yonlendirme"
   ],
   "gecmis": [
     {
@@ -202,6 +206,42 @@
       "alt_konu": "LPWAN ve Chirp modülasyonu (MATLAB/SDR)",
       "baslik": "LoRa Benzeri Chirp Spread Spectrum (CSS) Modem ve Link Bütçesi",
       "repo_yol": "haberlesme/lora-css-modem-matlab",
+      "commit": ""
+    },
+    {
+      "tarih": "2026-10-28",
+      "gun": 4,
+      "kategori": "autocad",
+      "alt_konu": "endüstriyel aydınlatma ve acil kaçış tasarımı (AutoCAD/DWG)",
+      "baslik": "Fabrika Üretim Holü Aydınlatma (EN 12464-1) ve Acil Kaçış (EN 1838) Tasarımı",
+      "repo_yol": "autocad/uretim-hali-aydinlatma",
+      "commit": ""
+    },
+    {
+      "tarih": "2026-10-28",
+      "gun": 4,
+      "kategori": "gomulu-elektronik",
+      "alt_konu": "reaktif güç kompanzasyonu ve gömülü kontrol (ESP32/C)",
+      "baslik": "ESP32 12 Kademeli Otomatik Reaktif Güç Kompanzasyon Rölesi",
+      "repo_yol": "gomulu-elektronik/esp32-kompanzasyon-rolesi",
+      "commit": ""
+    },
+    {
+      "tarih": "2026-10-28",
+      "gun": 4,
+      "kategori": "matlab-simulink",
+      "alt_konu": "İHA uçuş dinamikleri ve kaskad kontrol (Simulink)",
+      "baslik": "6-DOF Quadrotor Dinamik Uçuş Modeli ve Kaskad PID Kontrolü",
+      "repo_yol": "matlab-simulink/quadrotor-6dof-dinamik",
+      "commit": ""
+    },
+    {
+      "tarih": "2026-10-28",
+      "gun": 4,
+      "kategori": "haberlesme",
+      "alt_konu": "akıllı anten dizileri ve adaptif huzme şekillendirme (MATLAB)",
+      "baslik": "2.45 GHz Mikroşerit Yama Anten ve ULA MVDR Huzme Şekillendirme",
+      "repo_yol": "haberlesme/anten-dizisi-huzme-yonlendirme",
       "commit": ""
     }
   ]
