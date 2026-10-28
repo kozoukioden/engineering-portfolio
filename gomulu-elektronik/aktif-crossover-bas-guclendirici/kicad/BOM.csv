@@ -1,0 +1,16 @@
+Item,Reference,Value,Footprint,Description,Manufacturer Part
+1,"R1, R2","56k 1%","R_Axial_DIN0207_L6.3mm_D2.5mm_P7.62mm","Metal Film Rezistör (Subsonik HPF)",MFR-25FTE52-56K
+2,"R3, R4, R5, R6","20k 1%","R_Axial_DIN0207_L6.3mm_D2.5mm_P7.62mm","Metal Film Rezistör (LR4 LPF)",MFR-25FTE52-20K
+3,"R7, R8","10k 1%","R_Axial_DIN0207_L6.3mm_D2.5mm_P7.62mm","Metal Film Rezistör (Faz Ayarı)",MFR-25FTE52-10K
+4,"R9","3.3k 1%","R_Axial_DIN0207_L6.3mm_D2.5mm_P7.62mm","Metal Film Rezistör (Bass Boost)",MFR-25FTE52-3K3
+5,"R10","33k 1%","R_Axial_DIN0207_L6.3mm_D2.5mm_P7.62mm","Metal Film Rezistör (Bass Boost)",MFR-25FTE52-33K
+6,"C1, C2","150nF 63V 5%","C_Rect_L7.2mm_W3.5mm_P5.00mm","WIMA MKS2 Film Kondansatör (HPF)",MKS2C031501B00JSSD
+7,"C3, C4, C5, C6","100nF 63V 5%","C_Rect_L7.2mm_W3.5mm_P5.00mm","WIMA MKS2 Film Kondansatör (LPF)",MKS2C031001A00JSSD
+8,"C7","47nF 63V 5%","C_Rect_L7.2mm_W2.5mm_P5.00mm","WIMA MKS2 Film Kondansatör (Faz)",MKS2C024701A00JSSD
+9,"C8, C9","100nF 63V 5%","C_Rect_L7.2mm_W3.5mm_P5.00mm","WIMA MKS2 Film Kondansatör (Boost)",MKS2C031001A00JSSD
+10,"C10, C11, C12, C13","100nF 50V X7R","C_0805_2012Metric","Dekuplaj Kondansatörü",CC0805KRX7R9BB104
+11,"U1, U2, U3","NE5532P / OPA2134","DIP-8_W7.62mm","Çift Düşük Gürültülü Ses Op-Amp",NE5532P
+12,"VR1","50k Lineer","Potentiometer_Alps_RK09L","Faz Ayar Potansiyometresi (0-180°)",RK09L1140A65
+13,"VR2","20k Logaritmik","Potentiometer_Alps_RK09L","Bas Kazanç Potansiyometresi (0-+6dB)",RK09L114001T
+14,"J1, J2","RCA Phono Jack","RCA_Jack_Horizontal","Giriş / Çıkış Ses Konnektörü",RCJ-014
+15,"J3","Terminal Block 3-pin","TerminalBlock_Phoenix_MKDS-1,5-3-5.08","Güç Girişi (+15V, GND, -15V)",1715734

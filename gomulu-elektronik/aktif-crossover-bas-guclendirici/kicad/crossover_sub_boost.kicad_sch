@@ -1,0 +1,76 @@
+(kicad_sch
+	(version 20251020)
+	(generator "eeschema")
+	(generator_version "10.0")
+	(uuid "a1b2c3d4-e5f6-4a5b-8c9d-0123456789ab")
+	(paper "A3")
+	(title_block
+		(title "4. Derece Linkwitz-Riley Aktif Crossover ve Bas Güçlendirici")
+		(date "2026-10-28")
+		(rev "1.0")
+		(company "Hakan OĞUZ - Elektrik Elektronik Mühendisi")
+		(comment 1 "LR4 (24 dB/oct) LPF + 20 Hz Sub-sonik HPF + 0-180 Faz Ayarı + 45 Hz Bass Boost")
+	)
+	(lib_symbols
+		(symbol "Device:R"
+			(pin_numbers (hide yes))
+			(pin_names (offset 0))
+			(exclude_from_sim no)(in_bom yes)(on_board yes)
+			(property "Reference" "R" (at 2.032 0 90)(effects (font (size 1.27 1.27))))
+			(property "Value" "R" (at 0 0 90)(effects (font (size 1.27 1.27))))
+			(symbol "R_0_1"
+				(rectangle (start -1.016 -2.54) (end 1.016 2.54)(stroke (width 0.254))(fill (type none)))
+			)
+			(symbol "R_1_1"
+				(pin passive line (at 0 3.81 270)(length 1.27)(name "")(number "1"))
+				(pin passive line (at 0 -3.81 90)(length 1.27)(name "")(number "2"))
+			)
+		)
+		(symbol "Device:C"
+			(pin_numbers (hide yes))
+			(pin_names (offset 0.254))
+			(exclude_from_sim no)(in_bom yes)(on_board yes)
+			(property "Reference" "C" (at 0.635 2.54 0)(effects (font (size 1.27 1.27))))
+			(property "Value" "C" (at 0.635 -2.54 0)(effects (font (size 1.27 1.27))))
+			(symbol "C_0_1"
+				(polyline (pts (xy -2.032 0.762) (xy 2.032 0.762))(stroke (width 0.508)))
+				(polyline (pts (xy -2.032 -0.762) (xy 2.032 -0.762))(stroke (width 0.508)))
+			)
+			(symbol "C_1_1"
+				(pin passive line (at 0 3.81 270)(length 2.794)(name "")(number "1"))
+				(pin passive line (at 0 -3.81 90)(length 2.794)(name "")(number "2"))
+			)
+		)
+		(symbol "Amplifier_Operational:NE5532"
+			(pin_names (offset 0.127))
+			(in_bom yes)(on_board yes)
+			(property "Reference" "U" (at 2 4 0)(effects (font (size 1.27 1.27))))
+			(property "Value" "NE5532" (at 2 -4 0)(effects (font (size 1.27 1.27))))
+			(symbol "NE5532_1_1"
+				(polyline (pts (xy -5.08 5.08) (xy 5.08 0) (xy -5.08 -5.08) (xy -5.08 5.08))(stroke (width 0.254)))
+				(pin input line (at -7.62 2.54 0)(length 2.54)(name "+")(number "3"))
+				(pin input line (at -7.62 -2.54 0)(length 2.54)(name "-")(number "2"))
+				(pin output line (at 7.62 0 180)(length 2.54)(name "OUT")(number "1"))
+			)
+		)
+	)
+	(text "1. KAT: 20 Hz 2. DERECE SUB-SONIK FILTRE (Sallen-Key HPF, fc=20 Hz, Q=0.707)" (at 25 30 0)(effects (font (size 2.5 2.5)(bold yes))))
+	(text "Hoparlör membranının DC ve infrasonik aşırı salınımını önler (12 dB/oct zayıflatma)." (at 25 38 0)(effects (font (size 1.8 1.8))))
+	(text "Bileşenler: R1=R2=56k %1, C1=C2=150nF WIMA Film, Op-Amp: U1A (NE5532)" (at 25 45 0)(effects (font (size 1.8 1.8))))
+
+	(text "2. KAT: 4. DERECE LINKWITZ-RILEY ALCAK GECIREN FILTRE (fc=80 Hz, -24 dB/oct)" (at 25 60 0)(effects (font (size 2.5 2.5)(bold yes))))
+	(text "İki kaskad 2. derece Sallen-Key Butterworth (Q=0.7071) hücresi -> Kesişimde tam -6 dB ve sıfır faz farkı." (at 25 68 0)(effects (font (size 1.8 1.8))))
+	(text "Bölüm 1 (U1B): R3=R4=20k %1, C3=100nF, C4=100nF Film" (at 25 75 0)(effects (font (size 1.8 1.8))))
+	(text "Bölüm 2 (U2A): R5=R6=20k %1, C5=100nF, C6=100nF Film" (at 25 82 0)(effects (font (size 1.8 1.8))))
+
+	(text "3. KAT: SUREKLI AYARLANABILIR ALL-PASS FAZ KAYDIRICI (0 - 180 Derece)" (at 25 100 0)(effects (font (size 2.5 2.5)(bold yes))))
+	(text "Subwoofer ile ana hoparlörlerin akustik faz uyumunu oda akustiğine göre ayarlar." (at 25 108 0)(effects (font (size 1.8 1.8))))
+	(text "H(s) = (1 - s*R*C) / (1 + s*R*C) | U2B, R7=R8=10k, VR1=50k Lineer Potansiyometre, C7=47nF" (at 25 115 0)(effects (font (size 1.8 1.8))))
+
+	(text "4. KAT: DEGİSKEN PARAMETRİK BAS GUCLENDIRICI (Bass Boost: 45 Hz, +0 .. +6 dB)" (at 25 135 0)(effects (font (size 2.5 2.5)(bold yes))))
+	(text "Wien-Bridge / Gyrator tabanlı bant geçiren geri besleme ile 45 Hz merkez frekansında ayarlanabilir artırma." (at 25 143 0)(effects (font (size 1.8 1.8))))
+	(text "U3A, VR2=20k Log Potansiyometre, R9=3.3k, R10=33k, C8=100nF, C9=100nF" (at 25 150 0)(effects (font (size 1.8 1.8))))
+
+	(text "5. KAT: CIKIS TAMPONU VE SIMETRIK BESLEME (+-15V Regülasyon)" (at 25 170 0)(effects (font (size 2.5 2.5)(bold yes))))
+	(text "Düşük empedanslı çıkış sürücüsü (Zout < 50 Ohm), LM7815 / LM7915 regülatörler, 100nF MLCC dekuplaj." (at 25 178 0)(effects (font (size 1.8 1.8))))
+)

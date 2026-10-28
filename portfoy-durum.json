@@ -17,7 +17,11 @@
     "autocad/sarj-otoparki-dagitim",
     "gomulu-elektronik/rpi-kenar-ag-gecidi",
     "matlab-simulink/ev-pmsm-foc-surucu",
-    "haberlesme/esp32-ble-rssi-imu-ekf"
+    "haberlesme/esp32-ble-rssi-imu-ekf",
+    "autocad/kompakt-trafo-merkezi",
+    "gomulu-elektronik/aktif-crossover-bas-guclendirici",
+    "matlab-simulink/pv-kismi-golgelenme-mppt",
+    "haberlesme/lora-css-modem-matlab"
   ],
   "gecmis": [
     {
@@ -162,6 +166,42 @@
       "alt_konu": "iç mekan konumlandırma ve sensör füzyonu (ESP32/EKF)",
       "baslik": "ESP32 BLE RSSI + IMU EKF Kapalı Alan Konumlandırma",
       "repo_yol": "haberlesme/esp32-ble-rssi-imu-ekf",
+      "commit": ""
+    },
+    {
+      "tarih": "2026-10-28",
+      "gun": 3,
+      "kategori": "autocad",
+      "alt_konu": "kompakt trafo merkezi ve röle koordinasyonu (AutoCAD/DWG)",
+      "baslik": "34,5/0,4 kV 1600 kVA Kompakt Trafo Merkezi ve IEC 60255 Röle Koordinasyonu",
+      "repo_yol": "autocad/kompakt-trafo-merkezi",
+      "commit": ""
+    },
+    {
+      "tarih": "2026-10-28",
+      "gun": 3,
+      "kategori": "gomulu-elektronik",
+      "alt_konu": "aktif analog filtre ve ses sistemleri (KiCad/Analog)",
+      "baslik": "4. Derece Linkwitz-Riley Aktif Crossover ve Bas Güçlendirici",
+      "repo_yol": "gomulu-elektronik/aktif-crossover-bas-guclendirici",
+      "commit": ""
+    },
+    {
+      "tarih": "2026-10-28",
+      "gun": 3,
+      "kategori": "matlab-simulink",
+      "alt_konu": "fotovoltaik MPPT optimizasyonu (MATLAB)",
+      "baslik": "Kısmi Gölgelenmede PV Çok Tepeli P-V Eğrisi ve PSO MPPT Optimizasyonu",
+      "repo_yol": "matlab-simulink/pv-kismi-golgelenme-mppt",
+      "commit": ""
+    },
+    {
+      "tarih": "2026-10-28",
+      "gun": 3,
+      "kategori": "haberlesme",
+      "alt_konu": "LPWAN ve Chirp modülasyonu (MATLAB/SDR)",
+      "baslik": "LoRa Benzeri Chirp Spread Spectrum (CSS) Modem ve Link Bütçesi",
+      "repo_yol": "haberlesme/lora-css-modem-matlab",
       "commit": ""
     }
   ]

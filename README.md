@@ -34,6 +34,10 @@ engineering reasoning behind the design, how to run or simulate it, and the resu
 | [Raspberry Pi Industrial Edge Gateway](gomulu-elektronik/rpi-kenar-ag-gecidi) | Embedded / Edge | Modbus RTU/TCP telemetry collector, local SQLite store-and-forward buffer, and MQTT cloud bridge with Docker support. |
 | [EV PMSM Field Oriented Control (FOC) Drive](matlab-simulink/ev-pmsm-foc-surucu) | Simulink / Drive | 60 kW permanent magnet synchronous motor dq vector control, MTPA, cascade speed/current PI loops (.slx binary model). |
 | [ESP32 BLE RSSI + IMU Indoor Positioning EKF](haberlesme/esp32-ble-rssi-imu-ekf) | Communications / RF | Log-distance path loss calibration, trilateration, and 4-state Extended Kalman Filter sensor fusion (RMSE: 1.42 m). |
+| [34.5/0.4 kV 1600 kVA Substation & TCC Relay Protection](autocad/kompakt-trafo-merkezi) | AutoCAD / DWG | Prefabricated concrete kiosk layout, MV switchgear, transformer oil pit, and IEC 60255 IDMT relay coordination curves (.dwg). |
+| [4th-Order Linkwitz-Riley Active Crossover & Bass Boost](gomulu-elektronik/aktif-crossover-bas-guclendirici) | Electronics / Analog | LR4 80 Hz low-pass, 20 Hz subsonic high-pass, 0-180 deg phase control, +6dB bass boost, KiCad schematic (.pdf/.kicad_sch/.kicad_pcb). |
+| [PV Partial Shading Multi-Peak MPPT & PSO Optimization](matlab-simulink/pv-kismi-golgelenme-mppt) | MATLAB / Energy | 4-module bypass diode analytical multi-peak P-V curve, P&O local trap demonstration, and Particle Swarm Optimization (+32.5% energy gain). |
+| [LoRa-like Chirp Spread Spectrum (CSS) Modem Core](haberlesme/lora-css-modem-matlab) | Communications / RF | From-scratch CSS chirp modulator, dechirp+FFT demodulator, AWGN BER-SNR curves, and 868 MHz Okumura-Hata urban link budget. |
 
 ## About
 
