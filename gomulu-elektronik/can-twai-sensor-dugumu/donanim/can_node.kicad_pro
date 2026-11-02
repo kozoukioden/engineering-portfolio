@@ -1,0 +1,8 @@
+{
+  "board": {},
+  "libraries": {"pinned_footprint_libs": [], "pinned_symbol_libs": []},
+  "meta": {"filename": "can_node.kicad_pro", "version": 1},
+  "schematic": {},
+  "sheets": [["4eda81df-0f04-4b8b-a7ba-908ddea1e49f", "Root"]],
+  "text_variables": {}
+}

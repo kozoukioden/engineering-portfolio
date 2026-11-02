@@ -65,3 +65,12 @@ Doğrulama betiği terminalden doğrudan çalıştırılabilir:
 ```bash
 python sim/can_simulasyon.py
 ```
+
+## Donanım (KiCad)
+
+`donanim/can_node.kicad_sch`: ESP32-WROOM-32, SN65HVD230 CAN alıcı-verici (TXD→IO21, RXD→IO22),
+120 Ω diferansiyel hat sonlandırması ve Rs eğim direnci, AMS1117-3.3 regülatör, CAN/güç/prog
+konnektörleri ve harici sensör için I2C başlığı. ERC: 0 ihlal. Şema baskısı `can_node.pdf`,
+malzeme listesi `can_node-bom.csv`.
+
+![Devre şeması](donanim/sema.png)
