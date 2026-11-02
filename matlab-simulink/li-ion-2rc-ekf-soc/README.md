@@ -30,8 +30,8 @@ $$V_{t,k} = OCV(SOC_k) - V_{1,k} - V_{2,k} - I_k R_0 + v_k$$
 
 - **Başlangıç Kestirim Hatası:** $\%20.0$
 - **Hatanın $\%1$'in Altına Düşüş Süresi:** $< 8\text{ dakika}$
-- **Ortalama Mutlak Hata (MAE):** $\%0.84$
-- **Nihai Kestirim Hatası:** $\%0.31$
+- **Ortalama Mutlak Hata (MAE):** $\%0.19$
+- **Nihai Kestirim Hatası:** $\%0.29$
 
 ## Dosya Yapısı
 

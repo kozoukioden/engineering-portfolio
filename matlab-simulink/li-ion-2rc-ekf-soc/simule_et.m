@@ -83,7 +83,7 @@ end
 soc_est = x_est(1, :)';
 soc_error = abs(true_soc - soc_est) * 100.0;
 
-fprintf('EKF Analizi Tamamlandı: Ortalama Mutlak Hata (MAE) = %%.2f, Son Hata = %%.2f\n', ...
+fprintf('EKF Analizi Tamamlandı: Ortalama Mutlak Hata (MAE) = %.2f, Son Hata = %.2f\n', ...
         mean(soc_error(500:end)), soc_error(end));
 
 
