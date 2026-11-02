@@ -47,7 +47,7 @@ static void temp_control_task(void *pvParameters)
             pwm_duty = pid_compute(&heater_pid, SETPOINT_TEMP_C, current_temp);
         }
 
-        ESP_LOGI(TAG, "Kanal 0: %.2f C | Hedef: %.2f C | PID Cikis: %%.1f PWM", current_temp, SETPOINT_TEMP_C, pwm_duty);
+        ESP_LOGI(TAG, "Kanal 0: %.2f C | Hedef: %.2f C | PID Cikis: %.1f PWM", current_temp, SETPOINT_TEMP_C, pwm_duty);
         vTaskDelay(pdMS_TO_TICKS(500));
     }
 }
