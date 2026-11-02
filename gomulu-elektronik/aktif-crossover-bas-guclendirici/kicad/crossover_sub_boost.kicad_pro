@@ -1,0 +1,15 @@
+{
+  "meta": {
+    "filename": "crossover_sub_boost.kicad_pro",
+    "version": 1
+  },
+  "project": {
+    "files": []
+  },
+  "schematic": {
+    "drawing": {
+      "default_line_thickness": 0.1524
+    }
+  },
+  "sheets": []
+}

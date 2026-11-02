@@ -1,8 +1,32 @@
 {
   "sonraki_gun": 2,
-  "elektronik_alt_dongu": 2,
-  "matlab_simulink_alt_dongu": 1,
+  "elektronik_alt_dongu": 4,
+  "matlab_simulink_alt_dongu": 2,
   "plc_sayac": 1,
+  "makale_bekliyor": [
+    "matlab-simulink/sebeke-baglantili-lcl-evirici",
+    "matlab-simulink/manipulator-kinematik-yorunge",
+    "autocad/isletme-kuvvetli-akim-sld",
+    "autocad/bina-topraklama-ve-yildirimsavar",
+    "gomulu-elektronik/can-twai-sensor-dugumu",
+    "gomulu-elektronik/cok-kanalli-termokupl-pid",
+    "autocad/misir-isleme-mcc-vfd",
+    "gomulu-elektronik/esp32-kestirimci-bakim",
+    "matlab-simulink/li-ion-2rc-ekf-soc",
+    "haberlesme/rfid-125khz-em4100-okuyucu",
+    "autocad/sarj-otoparki-dagitim",
+    "gomulu-elektronik/rpi-kenar-ag-gecidi",
+    "matlab-simulink/ev-pmsm-foc-surucu",
+    "haberlesme/esp32-ble-rssi-imu-ekf",
+    "autocad/kompakt-trafo-merkezi",
+    "gomulu-elektronik/aktif-crossover-bas-guclendirici",
+    "matlab-simulink/pv-kismi-golgelenme-mppt",
+    "haberlesme/lora-css-modem-matlab",
+    "autocad/uretim-hali-aydinlatma",
+    "gomulu-elektronik/esp32-kompanzasyon-rolesi",
+    "matlab-simulink/quadrotor-6dof-dinamik",
+    "haberlesme/anten-dizisi-huzme-yonlendirme"
+  ],
   "gecmis": [
     {
       "tarih": "2026-10-22",
@@ -21,6 +45,204 @@
       "baslik": "Üç Fazlı Enerji Analizörü Düğümü (ESP32/ESP-IDF, Modbus TCP, THD)",
       "repo_yol": "gomulu-elektronik/uc-faz-enerji-analizoru",
       "commit": "c865ef4"
+    },
+    {
+      "tarih": "2026-10-26",
+      "gun": 2,
+      "kategori": "matlab-simulink",
+      "alt_konu": "güç elektroniği ve şebeke kontrolü (Simulink)",
+      "baslik": "Şebeke Bağlantılı 10 kW LCL Evirici dq Vektör Kontrolü ve Rezonans Sönümleme",
+      "repo_yol": "matlab-simulink/sebeke-baglantili-lcl-evirici",
+      "commit": "f65fc8c"
+    },
+    {
+      "tarih": "2026-10-26",
+      "gun": 2,
+      "kategori": "matlab-simulink",
+      "alt_konu": "robotik manipülatör kinematiği (Simulink)",
+      "baslik": "6-DOF Endüstriyel Manipülatör Kinematiği ve Spline Yörünge Planlama",
+      "repo_yol": "matlab-simulink/manipulator-kinematik-yorunge",
+      "commit": "f65fc8c"
+    },
+    {
+      "tarih": "2026-10-26",
+      "gun": 1,
+      "kategori": "autocad",
+      "alt_konu": "kuvvetli akım ve AG dağıtım (AutoCAD/DXF)",
+      "baslik": "Küçük İşletme Kuvvetli Akım Tek-Hat Şeması (SLD) ve Pano Yerleşimi",
+      "repo_yol": "autocad/isletme-kuvvetli-akim-sld",
+      "commit": ""
+    },
+    {
+      "tarih": "2026-10-26",
+      "gun": 1,
+      "kategori": "autocad",
+      "alt_konu": "topraklama ve yıldırımdan korunma LPS (AutoCAD/DXF)",
+      "baslik": "Bina Temel/Ring Topraklama ve Yıldırımdan Korunma (LPS) Planı",
+      "repo_yol": "autocad/bina-topraklama-ve-yildirimsavar",
+      "commit": ""
+    },
+    {
+      "tarih": "2026-10-26",
+      "gun": 1,
+      "kategori": "gomulu-elektronik",
+      "alt_konu": "endüstriyel haberleşme CAN/TWAI (ESP32)",
+      "baslik": "CAN (TWAI) Tabanlı Dağıtık Sensör Düğümü",
+      "repo_yol": "gomulu-elektronik/can-twai-sensor-dugumu",
+      "commit": ""
+    },
+    {
+      "tarih": "2026-10-26",
+      "gun": 1,
+      "kategori": "gomulu-elektronik",
+      "alt_konu": "enstrümantasyon ve proses kontrolü (ESP32)",
+      "baslik": "Çok Kanallı Termokupl Veri Toplama ve Anti-Windup PID Isı Kontrolü",
+      "repo_yol": "gomulu-elektronik/cok-kanalli-termokupl-pid",
+      "commit": ""
+    },
+    {
+      "tarih": "2026-10-28",
+      "gun": 1,
+      "kategori": "autocad",
+      "alt_konu": "endüstriyel MCC ve motor kumandası (AutoCAD/DWG)",
+      "baslik": "Mısır İşleme Hattı MCC ve VFD Kumanda Panosu",
+      "repo_yol": "autocad/misir-isleme-mcc-vfd",
+      "commit": ""
+    },
+    {
+      "tarih": "2026-10-28",
+      "gun": 1,
+      "kategori": "gomulu-elektronik",
+      "alt_konu": "kestirimci bakım ve titreşim teşhisi (ESP32)",
+      "baslik": "ESP32 Kestirimci Bakım Düğümü: Rulman Titreşimi ve MCSA Analizi",
+      "repo_yol": "gomulu-elektronik/esp32-kestirimci-bakim",
+      "commit": ""
+    },
+    {
+      "tarih": "2026-10-28",
+      "gun": 2,
+      "kategori": "matlab-simulink",
+      "alt_konu": "batarya modelleme ve durum kestirimi (MATLAB)",
+      "baslik": "Li-ion Batarya 2RC Eşdeğer Devre Modeli ve EKF ile SOC Kestirimi",
+      "repo_yol": "matlab-simulink/li-ion-2rc-ekf-soc",
+      "commit": ""
+    },
+    {
+      "tarih": "2026-10-28",
+      "gun": 1,
+      "kategori": "haberlesme",
+      "alt_konu": "RFID ve RF ön uç tasarımı (Donanım/Firmware)",
+      "baslik": "125 kHz EM4100 RFID Okuyucu ve Manchester Kod Çözücü",
+      "repo_yol": "haberlesme/rfid-125khz-em4100-okuyucu",
+      "commit": ""
+    },
+    {
+      "tarih": "2026-10-28",
+      "gun": 2,
+      "kategori": "autocad",
+      "alt_konu": "elektrikli araç şarj altyapısı ve trafo dağıtımı (AutoCAD/DWG)",
+      "baslik": "Elektrikli Araç Otoparkı Dağıtım Sistemi ve Dinamik Yük Yönetimi",
+      "repo_yol": "autocad/sarj-otoparki-dagitim",
+      "commit": ""
+    },
+    {
+      "tarih": "2026-10-28",
+      "gun": 2,
+      "kategori": "gomulu-elektronik",
+      "alt_konu": "endüstriyel IoT ve kenar bilişim (Raspberry Pi/Python)",
+      "baslik": "Raspberry Pi Endüstriyel Kenar Ağ Geçidi (Modbus, MQTT, SQLite Arabellekleme)",
+      "repo_yol": "gomulu-elektronik/rpi-kenar-ag-gecidi",
+      "commit": ""
+    },
+    {
+      "tarih": "2026-10-28",
+      "gun": 2,
+      "kategori": "matlab-simulink",
+      "alt_konu": "elektrikli araç çekiş motoru FOC kontrolü (Simulink)",
+      "baslik": "Elektrikli Araç PMSM Alan Yönlendirmeli Kontrol (FOC) Sürücü Simülasyonu",
+      "repo_yol": "matlab-simulink/ev-pmsm-foc-surucu",
+      "commit": ""
+    },
+    {
+      "tarih": "2026-10-28",
+      "gun": 2,
+      "kategori": "haberlesme",
+      "alt_konu": "iç mekan konumlandırma ve sensör füzyonu (ESP32/EKF)",
+      "baslik": "ESP32 BLE RSSI + IMU EKF Kapalı Alan Konumlandırma",
+      "repo_yol": "haberlesme/esp32-ble-rssi-imu-ekf",
+      "commit": ""
+    },
+    {
+      "tarih": "2026-10-28",
+      "gun": 3,
+      "kategori": "autocad",
+      "alt_konu": "kompakt trafo merkezi ve röle koordinasyonu (AutoCAD/DWG)",
+      "baslik": "34,5/0,4 kV 1600 kVA Kompakt Trafo Merkezi ve IEC 60255 Röle Koordinasyonu",
+      "repo_yol": "autocad/kompakt-trafo-merkezi",
+      "commit": ""
+    },
+    {
+      "tarih": "2026-10-28",
+      "gun": 3,
+      "kategori": "gomulu-elektronik",
+      "alt_konu": "aktif analog filtre ve ses sistemleri (KiCad/Analog)",
+      "baslik": "4. Derece Linkwitz-Riley Aktif Crossover ve Bas Güçlendirici",
+      "repo_yol": "gomulu-elektronik/aktif-crossover-bas-guclendirici",
+      "commit": ""
+    },
+    {
+      "tarih": "2026-10-28",
+      "gun": 3,
+      "kategori": "matlab-simulink",
+      "alt_konu": "fotovoltaik MPPT optimizasyonu (MATLAB)",
+      "baslik": "Kısmi Gölgelenmede PV Çok Tepeli P-V Eğrisi ve PSO MPPT Optimizasyonu",
+      "repo_yol": "matlab-simulink/pv-kismi-golgelenme-mppt",
+      "commit": ""
+    },
+    {
+      "tarih": "2026-10-28",
+      "gun": 3,
+      "kategori": "haberlesme",
+      "alt_konu": "LPWAN ve Chirp modülasyonu (MATLAB/SDR)",
+      "baslik": "LoRa Benzeri Chirp Spread Spectrum (CSS) Modem ve Link Bütçesi",
+      "repo_yol": "haberlesme/lora-css-modem-matlab",
+      "commit": ""
+    },
+    {
+      "tarih": "2026-10-28",
+      "gun": 4,
+      "kategori": "autocad",
+      "alt_konu": "endüstriyel aydınlatma ve acil kaçış tasarımı (AutoCAD/DWG)",
+      "baslik": "Fabrika Üretim Holü Aydınlatma (EN 12464-1) ve Acil Kaçış (EN 1838) Tasarımı",
+      "repo_yol": "autocad/uretim-hali-aydinlatma",
+      "commit": ""
+    },
+    {
+      "tarih": "2026-10-28",
+      "gun": 4,
+      "kategori": "gomulu-elektronik",
+      "alt_konu": "reaktif güç kompanzasyonu ve gömülü kontrol (ESP32/C)",
+      "baslik": "ESP32 12 Kademeli Otomatik Reaktif Güç Kompanzasyon Rölesi",
+      "repo_yol": "gomulu-elektronik/esp32-kompanzasyon-rolesi",
+      "commit": ""
+    },
+    {
+      "tarih": "2026-10-28",
+      "gun": 4,
+      "kategori": "matlab-simulink",
+      "alt_konu": "İHA uçuş dinamikleri ve kaskad kontrol (Simulink)",
+      "baslik": "6-DOF Quadrotor Dinamik Uçuş Modeli ve Kaskad PID Kontrolü",
+      "repo_yol": "matlab-simulink/quadrotor-6dof-dinamik",
+      "commit": ""
+    },
+    {
+      "tarih": "2026-10-28",
+      "gun": 4,
+      "kategori": "haberlesme",
+      "alt_konu": "akıllı anten dizileri ve adaptif huzme şekillendirme (MATLAB)",
+      "baslik": "2.45 GHz Mikroşerit Yama Anten ve ULA MVDR Huzme Şekillendirme",
+      "repo_yol": "haberlesme/anten-dizisi-huzme-yonlendirme",
+      "commit": ""
     }
   ]
 }

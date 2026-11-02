@@ -1,0 +1,8 @@
+{
+  "meta": { "filename": "can_node.kicad_pro", "version": 3 },
+  "schematic": {
+    "top_level_sheets": [
+      { "filename": "can_node.kicad_sch", "name": "can_node", "uuid": "00000000-0000-0000-0000-000000000000" }
+    ]
+  }
+}

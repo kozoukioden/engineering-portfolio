@@ -1,0 +1,8 @@
+{
+  "meta": { "filename": "em4100_rfid.kicad_pro", "version": 3 },
+  "schematic": {
+    "top_level_sheets": [
+      { "filename": "em4100_rfid.kicad_sch", "name": "em4100_rfid", "uuid": "00000000-0000-0000-0000-000000000000" }
+    ]
+  }
+}

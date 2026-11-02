@@ -1,0 +1,8 @@
+{
+  "meta": { "filename": "thermo_pid.kicad_pro", "version": 3 },
+  "schematic": {
+    "top_level_sheets": [
+      { "filename": "thermo_pid.kicad_sch", "name": "thermo_pid", "uuid": "00000000-0000-0000-0000-000000000000" }
+    ]
+  }
+}
