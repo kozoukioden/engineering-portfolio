@@ -1,18 +1,4 @@
-/*
- * Author : Hakan OGUZ - Elektrik Elektronik Muhendisi
- * Project: Three-phase energy analyzer node (ESP32 / ESP-IDF)
- * Date   : 2026-10-22
- * License: MIT
- * Desc   : Acquires 3-phase voltage/current via the ADC, computes per-phase RMS, power,
- *          power factor and THD with the power_metrics core, and serves the results over
- *          Modbus TCP (input registers). Designed for ESP-IDF v5.x. The analogue front end
- *          is a voltage transformer (ZMPT101B) for voltage and a current transformer with
- *          burden for current; the scale factors below map ADC counts back to volts and amperes.
- *          See donanim/analizor.kicad_sch for the full schematic.
- *
- * NOTE: The DSP core (power_metrics.c) is validated on the host (see ../sim). This firmware
- *       is at design/bring-up level; it has not been flashed to physical hardware.
- */
+// Hakan OĞUZ - Elektrik Elektronik Mühendisi
 #include <string.h>
 #include "freertos/FreeRTOS.h"
 #include "freertos/task.h"
@@ -22,41 +8,37 @@
 #include "esp_adc/adc_continuous.h"
 #include "mbcontroller.h"
 #include "power_metrics.h"
-#include "net_connect.h"   /* thin wrapper around esp_wifi station bring-up */
+#include "net_connect.h"
 
 static const char *TAG = "pmnode";
 
-/* ---- acquisition geometry ------------------------------------------------- */
+
 #define MAINS_HZ            50
 #define SAMPLES_PER_CYCLE   256
 #define CYCLES_PER_WINDOW   10
-#define WIN_SAMPLES         (SAMPLES_PER_CYCLE * CYCLES_PER_WINDOW)   /* 2560 */
-#define N_CHAN              6                                         /* Va Ia Vb Ib Vc Ic */
-#define PERCH_SPS           (MAINS_HZ * SAMPLES_PER_CYCLE)            /* 12800 */
-#define TOTAL_SPS           (PERCH_SPS * N_CHAN)                      /* 76800 */
+#define WIN_SAMPLES         (SAMPLES_PER_CYCLE * CYCLES_PER_WINDOW)
+#define N_CHAN              6
+#define PERCH_SPS           (MAINS_HZ * SAMPLES_PER_CYCLE)
+#define TOTAL_SPS           (PERCH_SPS * N_CHAN)
 
-/* ADC channels (ESP32): order must match the conversion pattern below. */
+
 static const adc_channel_t CH[N_CHAN] = {
-    ADC_CHANNEL_0, ADC_CHANNEL_3, ADC_CHANNEL_6,   /* Va, Ia, Vb */
-    ADC_CHANNEL_7, ADC_CHANNEL_4, ADC_CHANNEL_5    /* Ib, Vc, Ic */
+    ADC_CHANNEL_0, ADC_CHANNEL_3, ADC_CHANNEL_6,
+    ADC_CHANNEL_7, ADC_CHANNEL_4, ADC_CHANNEL_5
 };
 
-/* ---- front-end calibration ------------------------------------------------
- * ADC is 12-bit (0..4095) over 0..3.3 V with the 11 dB attenuation. Signals are
- * biased to mid-rail (1.65 V). Voltage channels: divider ratio 230 Vac -> ~0.9 Vpk at ADC.
- * Current channels: CT 2000:1 with 10 ohm burden -> ~0.1 V/A reflected and gained.
- * These constants convert a zero-centred ADC count to engineering units.         */
+
 #define ADC_MID_COUNT      2048.0f
 #define ADC_VOLT_PER_COUNT (3.3f / 4096.0f)
-#define V_SCALE            (364.0f)    /* [V per volt-at-ADC], set at commissioning */
-#define I_SCALE            (31.7f)     /* [A per volt-at-ADC], set at commissioning */
+#define V_SCALE            (364.0f)
+#define I_SCALE            (31.7f)
 
-/* ---- Modbus input-register map (uint16 each) ------------------------------ */
+
 enum {
-    /* per phase block = 8 regs: Vrms*10, Irms*100, P, S, Q, PF*1000, THDv*1000, THDi*1000 */
+
     REG_PER_PHASE = 8,
-    REG_TOTAL_BASE = 3 * REG_PER_PHASE,   /* 24 */
-    REG_COUNT = REG_TOTAL_BASE + 4        /* + Ptot,Stot,Qtot,PFtot*1000 */
+    REG_TOTAL_BASE = 3 * REG_PER_PHASE,
+    REG_COUNT = REG_TOTAL_BASE + 4
 };
 static uint16_t g_ireg[REG_COUNT];
 
@@ -87,7 +69,7 @@ static void publish_registers(const pm_system_result_t *r)
     g_ireg[REG_TOTAL_BASE + 3] = clamp_u16(r->pf_total * 1000.0f);
 }
 
-/* ---- ADC continuous driver ------------------------------------------------ */
+
 static adc_continuous_handle_t s_adc;
 
 static void adc_init(void)
@@ -116,7 +98,7 @@ static void adc_init(void)
     ESP_ERROR_CHECK(adc_continuous_start(s_adc));
 }
 
-/* Demultiplex one window of interleaved samples into the 6 engineering-unit buffers. */
+
 static void acquire_window(float *va, float *ia, float *vb, float *ib,
                            float *vc, float *ic)
 {
@@ -131,7 +113,7 @@ static void acquire_window(float *va, float *ia, float *vb, float *ib,
         const int frames = got / sizeof(adc_digi_output_data_t);
         for (int f = 0; f < frames; ++f) {
             adc_digi_output_data_t *d = (adc_digi_output_data_t *)&raw[f * sizeof(*d)];
-            const int ch_idx = f % N_CHAN;        /* round-robin pattern order */
+            const int ch_idx = f % N_CHAN;
             const int smp    = filled + f / N_CHAN;
             if (smp >= WIN_SAMPLES) break;
             const float centred = ((float)d->type1.data - ADC_MID_COUNT)
@@ -142,7 +124,7 @@ static void acquire_window(float *va, float *ia, float *vb, float *ib,
     }
 }
 
-/* ---- Modbus TCP slave ----------------------------------------------------- */
+
 static void modbus_init(void)
 {
     void *handler = NULL;
@@ -167,7 +149,7 @@ static void modbus_init(void)
     ESP_LOGI(TAG, "Modbus TCP slave on :502, %d input registers", REG_COUNT);
 }
 
-/* ---- acquisition task ----------------------------------------------------- */
+
 static void meter_task(void *arg)
 {
     static float va[WIN_SAMPLES], ia[WIN_SAMPLES], vb[WIN_SAMPLES];
@@ -188,7 +170,7 @@ static void meter_task(void *arg)
 void app_main(void)
 {
     ESP_ERROR_CHECK(nvs_flash_init());
-    ESP_ERROR_CHECK(net_connect());     /* bring up Wi-Fi station + esp_netif */
+    ESP_ERROR_CHECK(net_connect());
     adc_init();
     modbus_init();
     xTaskCreatePinnedToCore(meter_task, "meter", 8192, NULL, 10, NULL, 1);

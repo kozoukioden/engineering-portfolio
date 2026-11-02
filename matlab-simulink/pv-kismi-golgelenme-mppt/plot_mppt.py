@@ -1,8 +1,4 @@
-"""
-Kısmi Gölgelenmede PV Eğrileri ve MPPT Algoritmalarının Karşılaştırması
-Yazar: Hakan OĞUZ (Elektrik-Elektronik Mühendisi)
-"""
-
+# Hakan OĞUZ - Elektrik Elektronik Mühendisi
 import pandas as pd
 import numpy as np
 import matplotlib.pyplot as plt
@@ -26,7 +22,7 @@ if not os.path.exists(curve_file) or not os.path.exists(res_file):
 df_curve = pd.read_csv(curve_file)
 df_res = pd.read_csv(res_file)
 
-# 1. Çok Tepeli P-V ve I-V Eğrileri
+
 fig, ax1 = plt.subplots(figsize=(9, 5.5))
 
 color = 'tab:blue'
@@ -35,14 +31,14 @@ ax1.set_ylabel('Dizi Gücü P [Watt]', color=color, fontweight='bold')
 line1 = ax1.plot(df_curve['V'], df_curve['P'], color=color, lw=2.4, label='P-V Güç Eğrisi (Çok Tepeli)')
 ax1.tick_params(axis='y', labelcolor=color)
 
-# GMPP Noktasını İşaretle
+
 max_p = df_curve['P'].max()
 max_v = df_curve.loc[df_curve['P'].idxmax(), 'V']
 ax1.scatter([max_v], [max_p], color='red', s=120, zorder=5, marker='*', label=f'GMPP ({max_p:.1f} W @ {max_v:.1f} V)')
 ax1.annotate(f"Global Maksimum (GMPP)\n{max_p:.1f} W", xy=(max_v, max_p), xytext=(max_v - 15, max_p + 35),
              arrowprops=dict(arrowstyle="->", color="red", lw=1.5), fontweight='bold')
 
-# İkinci Eksen: Akım I-V
+
 ax2 = ax1.twinx()
 color = 'tab:green'
 ax2.set_ylabel('Dizi Akımı I [Amper]', color=color, fontweight='bold')
@@ -59,7 +55,7 @@ plt.tight_layout()
 plt.savefig(os.path.join(out_dir, "pv_cok_tepeli_karakteristik.png"), dpi=300)
 plt.close()
 
-# 2. MPPT İzleme ve Yakınsama Karşılaştırması
+
 fig, ax = plt.subplots(figsize=(9, 5))
 
 steps = df_res['step']

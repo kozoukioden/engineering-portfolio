@@ -1,8 +1,4 @@
-"""
-6-DOF Quadrotor Uçuş Dinamiği ve Kaskad Kontrol Grafikleri
-Yazar: Hakan OĞUZ (Elektrik-Elektronik Mühendisi)
-"""
-
+# Hakan OĞUZ - Elektrik Elektronik Mühendisi
 import pandas as pd
 import numpy as np
 import matplotlib.pyplot as plt
@@ -28,10 +24,10 @@ z = df['pos_z']
 pitch = df['pitch_deg']
 thrust = df['thrust_n']
 
-# 1. 2D Uçuş Yörüngesi ve Konum Takibi
+
 fig, (ax1, ax2) = plt.subplots(2, 1, figsize=(9, 6.5), sharex=True)
 
-# Yükseklik Takibi (Z)
+
 z_ref = np.where(t >= 0.5, 5.0, 0.0)
 ax1.plot(t, z_ref, 'k--', lw=1.5, label='Z Yükseklik Referansı (5.0 m)')
 ax1.plot(t, z, 'b-', lw=2.2, label='Quadrotor Gerçek Z Pozisyonu')
@@ -41,7 +37,7 @@ ax1.set_ylim(-0.5, 6.0)
 ax1.grid(True, linestyle='--', alpha=0.6)
 ax1.legend(loc='lower right')
 
-# Yatay Konum Takibi (X)
+
 x_ref = np.where(t >= 2.0, 3.0, 0.0)
 ax2.plot(t, x_ref, 'k--', lw=1.5, label='X Pozisyon Referansı (3.0 m)')
 ax2.plot(t, x, 'r-', lw=2.2, label='Quadrotor Gerçek X Pozisyonu')
@@ -59,7 +55,7 @@ plt.tight_layout()
 plt.savefig(os.path.join(out_dir, "quadrotor_ucus_yorungesi.png"), dpi=300)
 plt.close()
 
-# 2. İtki ve Pitch Açısı Grafiği
+
 fig, (ax1, ax2) = plt.subplots(2, 1, figsize=(9, 5.5), sharex=True)
 
 ax1.plot(t, thrust, 'g-', lw=1.8, label='Toplam Motor İtki Kuvveti U1 [N]')

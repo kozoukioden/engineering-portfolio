@@ -1,11 +1,4 @@
-/*
- * Author : Hakan OĞUZ - Elektrik Elektronik Mühendisi
- * Project: CAN (TWAI) Tabanlı Dağıtık Sensör Düğümü
- * Date   : 2026-10-26
- * License: MIT
- * Desc   : CAN telemetri ve heartbeat paketleme/ayrıştırma mantığı
- */
-
+// Hakan OĞUZ - Elektrik Elektronik Mühendisi
 #include "can_protocol.h"
 #include <string.h>
 
@@ -18,26 +11,26 @@ bool can_protocol_pack_telemetry(const sensor_telemetry_t *sensor, can_frame_t *
     frame->identifier = CAN_ID_SENSOR_TELEMETRY;
     frame->dlc = 8;
 
-    /* Sıcaklık: 0.01 C çözünürlük ile int16_t */
+
     int16_t temp_raw = (int16_t)(sensor->temperature_c * 100.0f);
     frame->data[0] = (uint8_t)(temp_raw & 0xFF);
     frame->data[1] = (uint8_t)((temp_raw >> 8) & 0xFF);
 
-    /* X İvmesi: 0.001 g (1 mg) ile int16_t */
+
     int16_t ax_raw = (int16_t)(sensor->accel_x_g * 1000.0f);
     frame->data[2] = (uint8_t)(ax_raw & 0xFF);
     frame->data[3] = (uint8_t)((ax_raw >> 8) & 0xFF);
 
-    /* Y İvmesi: 0.001 g (1 mg) ile int16_t */
+
     int16_t ay_raw = (int16_t)(sensor->accel_y_g * 1000.0f);
     frame->data[4] = (uint8_t)(ay_raw & 0xFF);
     frame->data[5] = (uint8_t)((ay_raw >> 8) & 0xFF);
 
-    /* Z İvmesi: 0.1 g çözünürlük ile int8_t */
+
     int8_t az_raw = (int8_t)(sensor->accel_z_g * 10.0f);
     frame->data[6] = (uint8_t)az_raw;
 
-    /* Byte 7: Rolling counter (üst 4 bit) */
+
     frame->data[7] = (uint8_t)((sensor->rolling_counter & 0x0F) << 4);
 
     return true;

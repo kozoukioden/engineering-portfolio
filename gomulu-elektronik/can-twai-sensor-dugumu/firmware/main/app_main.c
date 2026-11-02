@@ -1,11 +1,4 @@
-/*
- * Author : Hakan OĞUZ - Elektrik Elektronik Mühendisi
- * Project: CAN (TWAI) Tabanlı Dağıtık Sensör Düğümü
- * Date   : 2026-10-26
- * License: MIT
- * Desc   : ESP-IDF TWAI (Two-Wire Automotive Interface / CAN) sürücüsü ve görev döngüsü
- */
-
+// Hakan OĞUZ - Elektrik Elektronik Mühendisi
 #include <stdio.h>
 #include <string.h>
 #include <math.h>
@@ -26,10 +19,10 @@ static const char *TAG = "CAN_NODE";
 #define NODE_DEVICE_ID  0x05
 
 #ifdef ESP_PLATFORM
-/* TWAI başlatma ve filtre konfigürasyonu */
+
 static esp_err_t twai_node_init(void)
 {
-    /* 500 kbps Standart Endüstriyel / Otomotiv Hızı */
+
     twai_general_config_t g_config = TWAI_GENERAL_CONFIG_DEFAULT(TX_GPIO_NUM, RX_GPIO_NUM, TWAI_MODE_NORMAL);
     twai_timing_config_t t_config = TWAI_TIMING_CONFIG_500KBITS();
     twai_filter_config_t f_config = TWAI_FILTER_CONFIG_ACCEPT_ALL();
@@ -47,12 +40,12 @@ static esp_err_t twai_node_init(void)
     return ret;
 }
 
-/* Bus-off kurtarma döngüsü */
+
 static void handle_bus_recovery(void)
 {
     uint32_t alerts = 0;
     twai_read_alerts(&alerts, pdMS_TO_TICKS(10));
-    
+
     if (alerts & TWAI_ALERT_BUS_OFF) {
         ESP_LOGW(TAG, "CAN Bus-Off tespit edildi! Otomatik kurtarma baslatiliyor...");
         twai_initiate_recovery();
@@ -63,7 +56,7 @@ static void handle_bus_recovery(void)
     }
 }
 
-/* 100 Hz Telemetri ve 1 Hz Heartbeat Görevi */
+
 static void twai_transmit_task(void *pvParameters)
 {
     sensor_telemetry_t sensor = {
@@ -79,11 +72,11 @@ static void twai_transmit_task(void *pvParameters)
     twai_message_t tx_msg;
 
     while (1) {
-        /* Sentetik titreşim dalgalanması */
+
         sensor.accel_x_g = 0.25f * sinf(tick_count * 0.1f);
         sensor.rolling_counter = (sensor.rolling_counter + 1) & 0x0F;
 
-        /* Telemetri paketi (100 ms) */
+
         if (can_protocol_pack_telemetry(&sensor, &frame)) {
             tx_msg.identifier = frame.identifier;
             tx_msg.data_length_code = frame.dlc;
@@ -96,7 +89,7 @@ static void twai_transmit_task(void *pvParameters)
             }
         }
 
-        /* Heartbeat paketi (1000 ms - her 10 adımda bir) */
+
         if (tick_count % 10 == 0) {
             twai_status_info_t status;
             twai_get_status_info(&status);

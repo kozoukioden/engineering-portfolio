@@ -1,18 +1,4 @@
-# Author : Hakan OĞUZ - Elektrik Elektronik Mühendisi
-# Project: Cati Ustu 110 kWp Sebeke Baglantili GES - Saha Yerlesimi ve Tek Hat Semasi
-# Date   : 2026-10-22
-# License: MIT
-# Desc   : ezdxf ile 110 kWp catı GES icin saha yerlesim plani ve AG tek hat semasi uretir.
-"""
-Cizim birimi: milimetre. Iki pafta uretilir:
-  GES-01  ges-saha-yerlesimi.dxf  -> catı uzeri string yerlesimi, inverter/pano, DC-AC, topraklama
-  GES-02  ges-tek-hat-semasi.dxf  -> string -> DC ayirici/sigorta -> inverter -> AG pano -> sayac -> sebeke
-
-Sistem parametreleri (hesaplar README'de):
-  Modul   : 550 Wp mono, Voc=49.5 V, Vmp=41.7 V, Isc=13.95 A, Imp=13.19 A, beta_Voc=-0.27 %/C, 2278x1134 mm
-  Dizge   : 10 string x 20 modul = 200 modul = 110.0 kWp
-  Inverter: 100 kW, MPPT 200-1000 V, V_dc_max=1100 V, 3F 400 V
-"""
+# Hakan OĞUZ - Elektrik Elektronik Mühendisi
 import os
 import ezdxf
 from ezdxf.enums import TextEntityAlignment
@@ -98,7 +84,6 @@ def olcu_yatay(msp, x1, x2, y, metin, ofs=900):
     yazi(msp, metin, (x1 + x2) / 2, y + ofs + 180, h=380, layer="OLCU", align=TextEntityAlignment.CENTER)
 
 
-# ============================================================ PAFTA 1
 def saha_plani():
     doc = yeni_doc()
     msp = doc.modelspace()
@@ -124,8 +109,8 @@ def saha_plani():
              ARRAY_X0 + 150, y0 + MODUL_D + 250, h=360, layer="STRING", color=aci)
         string_sag_x.append((ARRAY_X0 + array_w, y0 + MODUL_D / 2))
 
-    # teknik hacim: inverter + AG pano (catının altinda)
-    inv = (33000.0, -5200.0, 4200.0, 3000.0)   # x,y,w,h
+
+    inv = (33000.0, -5200.0, 4200.0, 3000.0)
     msp.add_lwpolyline([(inv[0], inv[1]), (inv[0] + inv[2], inv[1]),
                         (inv[0] + inv[2], inv[1] + inv[3]), (inv[0], inv[1] + inv[3])],
                        close=True, dxfattribs={"layer": "INVERTER"})
@@ -142,7 +127,7 @@ def saha_plani():
     yazi(msp, "PANOSU", pano[0] + pano[2] / 2, pano[1] + pano[3] / 2 - 400, h=380,
          layer="AC_KABLO", align=TextEntityAlignment.CENTER)
 
-    # DC toplama: her string sag ucundan dusey DC bara, inverter girisine
+
     bara_x = ARRAY_X0 + array_w + 900
     for (sx, sy) in string_sag_x:
         msp.add_line((sx, sy), (bara_x, sy), dxfattribs={"layer": "DC_KABLO"})
@@ -155,7 +140,7 @@ def saha_plani():
     yazi(msp, "DC BARA (10 string)", bara_x + 250, (string_sag_x[0][1] + string_sag_x[-1][1]) / 2,
          h=330, layer="DC_KABLO", rot=90, align=TextEntityAlignment.CENTER)
 
-    # AC: inverter -> AG pano -> sebeke
+
     msp.add_line((inv[0] + inv[2], inv[1] + inv[3] / 2), (pano[0], pano[1] + pano[3] / 2),
                  dxfattribs={"layer": "AC_KABLO"})
     msp.add_line((pano[0] + pano[2], pano[1] + pano[3] / 2),
@@ -164,7 +149,7 @@ def saha_plani():
     yazi(msp, "SEBEKE (OG/AG)", pano[0] + pano[2] + 300, pano[1] + pano[3] / 2 + 300,
          h=360, layer="AC_KABLO")
 
-    # topraklama ring (dizge cevresi) + kazik sembolleri
+
     gx0, gy0 = ARRAY_X0 - 800, ARRAY_Y0 - 800
     gx1, gy1 = ARRAY_X0 + array_w + 400, ARRAY_Y0 + (STRING_SAYI - 1) * SIRA_PITCH + MODUL_D + 800
     msp.add_lwpolyline([(gx0, gy0), (gx1, gy0), (gx1, gy1), (gx0, gy1)],
@@ -174,7 +159,7 @@ def saha_plani():
         msp.add_line((kx - 250, ky - 250), (kx + 250, ky + 250), dxfattribs={"layer": "TOPRAKLAMA"})
     yazi(msp, "TOPRAKLAMA RINGI (Cu 50mm2) + KAZIK", gx0, gy1 + 300, h=360, layer="TOPRAKLAMA")
 
-    # olculendirme - gercek DIMENSION varliklari (nanoCAD/AutoCAD'de duzenlenebilir)
+
     arr_top = ARRAY_Y0 + (STRING_SAYI - 1) * SIRA_PITCH + MODUL_D
     dovr = {"dimtxt": 650, "dimasz": 450, "dimexe": 300, "dimexo": 500,
             "dimgap": 250, "dimdec": 0, "dimtad": 1, "dimlfac": 1.0}
@@ -185,15 +170,15 @@ def saha_plani():
                                dxfattribs={"layer": "OLCU"})
         d.render()
 
-    L((0, 0), (CATI_W, 0), (0, -1800))                                       # catı eni
-    L((0, 0), (0, CATI_D), (-1800, 0), ang=90)                               # catı boyu
+    L((0, 0), (CATI_W, 0), (0, -1800))
+    L((0, 0), (0, CATI_D), (-1800, 0), ang=90)
     L((ARRAY_X0, arr_top), (ARRAY_X0 + array_w, arr_top),
-      (ARRAY_X0, arr_top + 1700))                                            # dizge eni
+      (ARRAY_X0, arr_top + 1700))
     L((ARRAY_X0 + array_w, ARRAY_Y0), (ARRAY_X0 + array_w, arr_top),
-      (ARRAY_X0 + array_w + 2000, 0), ang=90)                               # dizge boyu
+      (ARRAY_X0 + array_w + 2000, 0), ang=90)
     L((ARRAY_X0 + array_w, ARRAY_Y0 + MODUL_D),
       (ARRAY_X0 + array_w, ARRAY_Y0 + SIRA_PITCH + MODUL_D),
-      (ARRAY_X0 + array_w + 4400, 0), ang=90)                               # sira araligi (pitch)
+      (ARRAY_X0 + array_w + 4400, 0), ang=90)
     yazi(msp, "MODUL: 2278 x 1134 mm (550 Wp)", 14000, -3800, h=500, layer="OLCU")
     yazi(msp, "TOPLAM: 200 modul = 110.0 kWp", 14000, -4900, h=500, layer="OLCU")
     yazi(msp, "SIRA ARALIGI (PITCH): 3000 mm", ARRAY_X0 + array_w + 5200, ARRAY_Y0 + 6000,
@@ -201,7 +186,7 @@ def saha_plani():
 
     kuzey_oku(msp, CATI_W - 2500, CATI_D - 3500)
 
-    # lejant
+
     lx, ly = 1200.0, -5400.0
     yazi(msp, "LEJANT", lx, ly + 2600, h=520, layer="LEJANT")
     lej = [("PV MODUL (550 Wp)", 5), ("DC KABLO (1100V DC)", 1),
@@ -218,7 +203,6 @@ def saha_plani():
     return doc
 
 
-# ============================================================ PAFTA 2: TEK HAT SEMASI
 def kutu(msp, x, y, w, h, metin, layer="SEMA", th=380):
     msp.add_lwpolyline([(x, y), (x + w, y), (x + w, y + h), (x, y + h)],
                        close=True, dxfattribs={"layer": layer})
@@ -233,7 +217,7 @@ def tek_hat():
 
     yazi(msp, "AG TEK HAT SEMASI - 110 kWp SEBEKE BAGLANTILI GES", 0, 23000, h=700, layer="SEMA")
 
-    # sol: string grubu temsili (3 string cizilir, 10 string yazilir)
+
     x = 0.0
     for i in range(3):
         yy = 18000 - i * 2600
@@ -247,39 +231,39 @@ def tek_hat():
     yazi(msp, "Her string: 20 x 550Wp\nVoc(-10C)=1083V < 1100V\nImp=13.2A",
          x, 7800, h=330, layer="YAZI")
 
-    # DC toplama kutusu: sigorta + SPD + DC ayirici
+
     kutu(msp, 6500, 13500, 4200, 4200,
          "DC TOPLAMA\n10 x gPV sigorta 16A\nTip II DC SPD\nDC AYIRICI 1100V", "SEMA", 330)
     msp.add_line((10700, 15600), (13500, 15600), dxfattribs={"layer": "DC_KABLO"})
     yazi(msp, "DC 1100V", 11000, 15800, h=330, layer="DC_KABLO")
 
-    # inverter
+
     kutu(msp, 13500, 13500, 4600, 4200, "INVERTER\n100 kW\nMPPT 200-1000V\nDC/AC", "INVERTER", 360)
     msp.add_line((18100, 15600), (21000, 15600), dxfattribs={"layer": "AC_KABLO"})
     yazi(msp, "3F 400V", 18400, 15800, h=330, layer="AC_KABLO")
 
-    # AC kesici (inverter cikis)
+
     kutu(msp, 21000, 14100, 3400, 3000, "AC KESICI\n160A 3F\n(MCCB)", "AC_KABLO", 360)
     msp.add_line((24400, 15600), (27000, 15600), dxfattribs={"layer": "AC_KABLO"})
 
-    # sayac
+
     kutu(msp, 27000, 14100, 3400, 3000, "CIFT YONLU\nSAYAC\n(OSOS)", "SEMA", 360)
     msp.add_line((30400, 15600), (33000, 15600), dxfattribs={"layer": "AC_KABLO"})
 
-    # AG pano / sebeke
+
     kutu(msp, 33000, 14100, 3800, 3000, "AG DAGITIM\nPANOSU\n+ SPD Tip II", "AC_KABLO", 360)
     msp.add_line((36800, 15600), (39600, 15600), dxfattribs={"layer": "AC_KABLO"})
-    # sebeke sembolu
+
     msp.add_circle((40500, 15600), 900, dxfattribs={"layer": "AC_KABLO"})
     yazi(msp, "~", 40500, 15300, h=900, layer="AC_KABLO", align=TextEntityAlignment.CENTER)
     yazi(msp, "SEBEKE", 40500, 13900, h=380, layer="AC_KABLO", align=TextEntityAlignment.CENTER)
 
-    # topraklama bara
+
     msp.add_line((6500, 11200), (36800, 11200), dxfattribs={"layer": "TOPRAKLAMA"})
     for tx in (8600, 15800, 22700, 28700, 34900):
         msp.add_line((tx, 11200), (tx, 13500 if tx < 20000 else 14100),
                      dxfattribs={"layer": "TOPRAKLAMA"})
-    # topraklama sembolu
+
     gx = 21500
     msp.add_line((gx, 11200), (gx, 10200), dxfattribs={"layer": "TOPRAKLAMA"})
     for i, wdt in enumerate((1400, 900, 450)):
@@ -287,7 +271,7 @@ def tek_hat():
                      dxfattribs={"layer": "TOPRAKLAMA"})
     yazi(msp, "KORUMA TOPRAKLAMA BARASI (PE)", 6500, 10900, h=330, layer="TOPRAKLAMA")
 
-    # notlar
+
     yazi(msp, "NOTLAR:", 0, 5200, h=420, layer="YAZI")
     notlar = [
         "1. Tasarim IEC 62548 (PV array) ve IEC 60364-7-712 esaslarina gore yapilmistir.",
@@ -305,7 +289,6 @@ def tek_hat():
     return doc
 
 
-# ============================================================ PNG RENDER
 def render_png(doc, path):
     import matplotlib
     matplotlib.use("Agg")

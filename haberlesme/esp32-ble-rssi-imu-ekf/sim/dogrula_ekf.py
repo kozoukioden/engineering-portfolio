@@ -1,34 +1,28 @@
-"""
-ESP32 BLE RSSI + IMU EKF Kapalı Alan Konumlandırma Simülasyonu ve Analizi
-Yazar: Hakan OĞUZ (Elektrik-Elektronik Mühendisi)
-"""
-
+# Hakan OĞUZ - Elektrik Elektronik Mühendisi
 import numpy as np
 import matplotlib.pyplot as plt
 from scipy.optimize import least_squares
 import os
 
-# Grafik stili
+
 plt.style.use('seaborn-v0_8-whitegrid' if 'seaborn-v0_8-whitegrid' in plt.style.available else 'default')
 plt.rcParams['font.sans-serif'] = 'Arial'
 plt.rcParams['font.size'] = 10
 
 def generate_ground_truth(duration=60.0, dt=0.05):
-    """
-    15m x 15m laboratuvar/depo alanında gerçekçi yörünge üretimi
-    """
+
+
     t = np.arange(0, duration, dt)
     n = len(t)
     pos = np.zeros((n, 2))
     vel = np.zeros((n, 2))
     acc = np.zeros((n, 2))
 
-    # Yumuşak manevralı yörünge (Lissajous / sekiz benzeri kapalı döngü)
-    # Alan: [2, 13] x [2, 13] metre
+
     pos[:, 0] = 7.5 + 4.5 * np.sin(0.12 * t)
     pos[:, 1] = 7.5 + 4.5 * np.sin(0.24 * t)
 
-    # Sayısal türevle hız ve ivme
+
     vel[:, 0] = np.gradient(pos[:, 0], dt)
     vel[:, 1] = np.gradient(pos[:, 1], dt)
     acc[:, 0] = np.gradient(vel[:, 0], dt)
@@ -37,28 +31,25 @@ def generate_ground_truth(duration=60.0, dt=0.05):
     return t, pos, vel, acc
 
 def log_distance_rssi(dist, tx_power=-59.0, n=2.4, sigma=2.2):
-    """
-    Log-distance path loss modeli + gölgeleme (shadowing) gürültüsü
-    """
+
+
     dist_safe = np.maximum(dist, 0.1)
     rssi_ideal = tx_power - 10.0 * n * np.log10(dist_safe)
     noise = np.random.normal(0, sigma, size=dist.shape)
     return rssi_ideal + noise
 
 def rssi_to_distance(rssi, tx_power=-59.0, n=2.4):
-    """
-    Ölçülen RSSI'dan mesafe tahmini
-    """
+
+
     exponent = (tx_power - rssi) / (10.0 * n)
     return 10.0 ** exponent
 
 def trilateration(distances, anchors, initial_guess=(7.5, 7.5)):
-    """
-    En küçük kareler ile ham trilaterasyon çözümü
-    """
+
+
     def residuals(p):
         return [np.linalg.norm(p - a) - d for a, d in zip(anchors, distances)]
-    
+
     res = least_squares(residuals, initial_guess, bounds=([0, 0], [15, 15]))
     return res.x
 
@@ -109,7 +100,7 @@ def main():
     t, pos_true, vel_true, acc_true = generate_ground_truth(duration, dt)
     n_steps = len(t)
 
-    # 4 Sabit Anchor (15m x 15m köşe yerleşimi)
+
     anchors = np.array([
         [1.0, 1.0],
         [14.0, 1.0],
@@ -119,24 +110,24 @@ def main():
     tx_power = -59.0
     path_loss_n = 2.4
 
-    # IMU Ölçüm Simülasyonu (İvmeölçer bias + gürültü)
-    imu_bias = np.array([0.05, -0.04]) # Sabit bias
+
+    imu_bias = np.array([0.05, -0.04])
     acc_meas = acc_true + imu_bias + np.random.normal(0, 0.15, acc_true.shape)
 
-    # EKF ve Ham Trilaterasyon çalıştır
+
     ekf = EKFTracker(init_pos=pos_true[0] + np.random.normal(0, 0.5, 2))
     pos_ekf = np.zeros((n_steps, 2))
     pos_raw_trilat = np.zeros((n_steps, 2))
 
-    ble_rate = 10 # 10 Hz BLE örnekleme (her 2 dt adımda bir)
+    ble_rate = 10
 
     current_trilat = pos_true[0].copy()
 
     for k in range(n_steps):
-        # 1. EKF Tahmin (IMU 20 Hz)
+
         ekf.predict(acc_meas[k, 0], acc_meas[k, 1], dt)
 
-        # 2. BLE Ölçüm (10 Hz)
+
         if k % 2 == 0:
             dists_meas = []
             for a_idx, anchor in enumerate(anchors):
@@ -145,16 +136,16 @@ def main():
                 d_est = rssi_to_distance(rssi, tx_power, path_loss_n)
                 dists_meas.append(d_est)
 
-                # EKF güncellemesi
+
                 ekf.update_ble(anchor, d_est)
 
-            # Ham Trilaterasyon
+
             current_trilat = trilateration(dists_meas, anchors, initial_guess=current_trilat)
 
         pos_raw_trilat[k] = current_trilat
         pos_ekf[k] = ekf.x[:2]
 
-    # Hata Metrikleri
+
     err_raw = np.linalg.norm(pos_raw_trilat - pos_true, axis=1)
     err_ekf = np.linalg.norm(pos_ekf - pos_true, axis=1)
 
@@ -177,13 +168,13 @@ def main():
     out_dir = os.path.join(os.path.dirname(__file__), "..", "sekiller")
     os.makedirs(out_dir, exist_ok=True)
 
-    # 1. Yörünge Grafiği
+
     fig, ax = plt.subplots(figsize=(8, 8))
     ax.plot(pos_true[:, 0], pos_true[:, 1], 'k-', lw=2.2, label='Gerçek Yörünge (Ground Truth)')
     ax.plot(pos_raw_trilat[::4, 0], pos_raw_trilat[::4, 1], 'r.', alpha=0.35, markersize=5, label='Ham BLE Trilaterasyon')
     ax.plot(pos_ekf[:, 0], pos_ekf[:, 1], 'b-', lw=1.8, label=f'BLE + IMU EKF (RMSE: {rmse_ekf:.2f} m)')
-    
-    # Çapalar
+
+
     ax.scatter(anchors[:, 0], anchors[:, 1], c='green', marker='^', s=140, edgecolors='black', zorder=5, label='BLE Sabit Çapa (Anchor)')
     for i, a in enumerate(anchors):
         ax.annotate(f"A{i+1} ({a[0]:.0f},{a[1]:.0f})", (a[0]+0.3, a[1]+0.3), fontweight='bold')
@@ -200,10 +191,10 @@ def main():
     plt.savefig(os.path.join(out_dir, "konum_yorungesi_karsilastirma.png"), dpi=300)
     plt.close()
 
-    # 2. Hata Zaman Grafiği ve CDF (Kümülatif Dağılım)
+
     fig, (ax1, ax2) = plt.subplots(1, 2, figsize=(12, 4.5))
 
-    # Zaman grafiği
+
     ax1.plot(t, err_raw, 'r-', alpha=0.5, lw=1.0, label=f'Ham BLE (RMSE: {rmse_raw:.2f} m)')
     ax1.plot(t, err_ekf, 'b-', lw=1.5, label=f'BLE+IMU EKF (RMSE: {rmse_ekf:.2f} m)')
     ax1.set_title("Zamana Göre Konumlandırma Hatası", fontweight='bold')
@@ -213,7 +204,7 @@ def main():
     ax1.grid(True, linestyle='--', alpha=0.6)
     ax1.legend(loc='upper right')
 
-    # CDF Grafiği
+
     sorted_raw = np.sort(err_raw)
     sorted_ekf = np.sort(err_ekf)
     cdf_raw = np.linspace(0, 1, len(sorted_raw))

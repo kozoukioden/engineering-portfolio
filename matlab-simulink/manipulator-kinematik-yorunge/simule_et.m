@@ -1,15 +1,12 @@
-% simule_et.m
-% 6-DOF Manipülatör Simulink modelini koşturur, kinematik ve tekillik analizini çıkartır.
 % Hakan OĞUZ - Elektrik Elektronik Mühendisi
-
 clear; clc; close all;
 
 cd(fileparts(mfilename('fullpath')));
 
-% Parametreleri yükle
+
 robot_parametreleri;
 
-% 1. Simulink Modelini Koştur
+
 fprintf('Simulink modeli (robot_yorunge_denetimi.slx) koşturuluyor...\n');
 sim_out = sim('model/robot_yorunge_denetimi.slx');
 
@@ -20,17 +17,17 @@ p_out  = squeeze(sim_out.sim_p.Data);
 
 N_samples = length(t_out);
 
-% 2. Geometrik Jakobiyen ve Yoshikawa Manipulability İndeksi Hesabı
+
 manipulability = zeros(1, N_samples);
 
 for k = 1:N_samples
     qk = q_out(:, k);
-    
-    % İleri kinematik ara çerçeveler
+
+
     T_curr = eye(4);
     z_axes = zeros(3, 6);
     p_origins = zeros(3, 7);
-    
+
     for i = 1:6
         ct = cos(qk(i)); st = sin(qk(i)); ca = cos(robot.alpha(i)); sa = sin(robot.alpha(i));
         A = [ct, -st*ca,  st*sa, robot.a(i)*ct;
@@ -41,10 +38,10 @@ for k = 1:N_samples
         z_axes(:, i) = T_curr(1:3, 3);
         p_origins(:, i+1) = T_curr(1:3, 4);
     end
-    
+
     p_ee = T_curr(1:3, 4);
-    
-    % Jakobiyen sütunları
+
+
     J = zeros(6, 6);
     for i = 1:6
         if i == 1
@@ -56,19 +53,19 @@ for k = 1:N_samples
         end
         J(:, i) = [cross(z_prev, (p_ee - p_prev)); z_prev];
     end
-    
-    % Yoshikawa indeksi: w = sqrt(det(J * J'))
+
+
     manipulability(k) = sqrt(max(0, det(J * J')));
 end
 
 fprintf('Simülasyon tamamlandı. Minimum Manipulability: %.4e\n', min(manipulability));
 
-% 3. Grafik 1: 3B Manipülatör İskeleti ve Uç Nokta İlerlemesi
+
 fig1 = figure('Name', '3B Manipülatör İskeleti ve Yörünge', 'Position', [100, 100, 800, 600], 'Visible', 'off');
 hold on; grid on; axis equal;
 view(40, 25);
 
-% Başlangıç ve bitiş duruş iskeletleri
+
 q_init = traj.q_start;
 q_end  = traj.q_goal;
 
@@ -99,7 +96,7 @@ legend('Location', 'northeast');
 saveas(fig1, fullfile('sekiller', 'robot_3b_yorunge.png'));
 close(fig1);
 
-% 4. Grafik 2: Eklem Açıları ve Hızları (C2 Sürekli)
+
 fig2 = figure('Name', 'Eklem Profilleri', 'Position', [100, 100, 850, 650], 'Visible', 'off');
 
 subplot(2, 1, 1);
@@ -120,7 +117,7 @@ legend('dq_1/dt', 'dq_2/dt', 'dq_3/dt', 'dq_4/dt', 'dq_5/dt', 'dq_6/dt', 'Locati
 saveas(fig2, fullfile('sekiller', 'eklem_profilleri.png'));
 close(fig2);
 
-% 5. Grafik 3: Kartezyen İlerleme ve Yoshikawa İndeksi
+
 fig3 = figure('Name', 'Kartezyen ve Manipulability', 'Position', [100, 100, 850, 500], 'Visible', 'off');
 
 subplot(2, 1, 1);

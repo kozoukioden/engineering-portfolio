@@ -1,8 +1,4 @@
-"""
-Fabrika Üretim Holü Aydınlatma (EN 12464-1) ve Acil Aydınlatma (EN 1838) CAD Çizim Üreticisi
-Yazar: Hakan OĞUZ (Elektrik-Elektronik Mühendisi)
-"""
-
+# Hakan OĞUZ - Elektrik Elektronik Mühendisi
 import os
 import math
 import numpy as np
@@ -58,40 +54,33 @@ def ciz_antet(msp, x_base, y_base, pafta_no, pafta_adi, olcek="1/100"):
     msp.add_text("STANDART: EN 12464-1 / EN 1838", dxfattribs={"layer": "ANTET", "height": 2.0}).set_placement((x_base + 95, y_base + 5))
 
 def uret_pafta1(dxf_yolu):
-    """Pafta 1: Üretim Holü Armatür Yerleşimi ve Nokta Nokta Lüks Hesap Izgarası"""
+
     doc = ezdxf.new("R2010", setup=True)
     setup_layers(doc)
     msp = doc.modelspace()
 
-    # A1 Çerçeve (841 x 594 mm)
+
     msp.add_lwpolyline([(0, 0), (841, 0), (841, 594), (0, 594), (0, 0)], dxfattribs={"layer": "CERCEVE", "const_width": 0.7})
     msp.add_lwpolyline([(10, 10), (831, 10), (831, 584), (10, 584), (10, 10)], dxfattribs={"layer": "CERCEVE", "const_width": 0.35})
 
     ciz_antet(msp, 640, 20, "EE-AYD-01", "ÜRETİM HOLÜ GENEL AYDINLATMA VE LÜKS DAĞILIM PLANI", "1/100")
 
-    # Fabrika Holü Boyutları: 60m x 24m -> Çizim ölçeği 1m = 10mm (600mm x 240mm)
-    # Konum: x = 30..630, y = 280..520
+
     hx, hy = 30, 280
     hw, hh = 600, 240
 
-    # Dış Duvarlar (Kalın polyline)
+
     msp.add_lwpolyline([(hx, hy), (hx + hw, hy), (hx + hw, hy + hh), (hx, hy + hh), (hx, hy)],
                        dxfattribs={"layer": "DUVAR", "const_width": 0.8})
 
-    # Kolonlar (Aks aralığı: Boyuna 6m -> 60mm, Enine 12m -> 120mm)
+
     for col_x in range(hx, hx + hw + 1, 60):
         for col_y in [hy, hy + 120, hy + hh]:
             msp.add_lwpolyline([(col_x - 3, col_y - 3), (col_x + 3, col_y - 3),
                                 (col_x + 3, col_y + 3), (col_x - 3, col_y + 3), (col_x - 3, col_y - 3)],
                                dxfattribs={"layer": "KOLON", "const_width": 0.5})
 
-    # Armatür Yerleşimi (Işık Akısı Hesabına Göre):
-    # E_req = 500 lux, Alan = 1440 m2, MF = 0.80, UF = 0.65
-    # Toplam Lümen = (500 * 1440) / (0.80 * 0.65) = 1,384,615 lm
-    # Armatür: 150W LED High-Bay (22,500 lm) -> N = 1,384,615 / 22,500 = 61.5 -> 60 Armatür!
-    # Düzen: 12 Sütun x 5 Sıra = 60 Armatür!
-    # Boyuna aralık: 60m / 12 = 5m (50mm), duvardan 2.5m (25mm)
-    # Enine aralık: 24m / 5 = 4.8m (48mm), duvardan 2.4m (24mm)
+
     dx = 50
     dy = 48
     start_x = hx + 25
@@ -101,33 +90,33 @@ def uret_pafta1(dxf_yolu):
         arm_x = start_x + ix * dx
         for iy in range(5):
             arm_y = start_y + iy * dy
-            # Armatür Sembolü (Daire + Artı)
+
             msp.add_circle((arm_x, arm_y), 4.0, dxfattribs={"layer": "ARMATUR_NORMAL"})
             msp.add_lwpolyline([(arm_x - 4, arm_y), (arm_x + 4, arm_y)], dxfattribs={"layer": "ARMATUR_NORMAL"})
             msp.add_lwpolyline([(arm_x, arm_y - 4), (arm_x, arm_y + 4)], dxfattribs={"layer": "ARMATUR_NORMAL"})
 
-            # Nokta Nokta Lüks Değeri (Merkezde ~540 lx, kenarlarda ~480 lx)
+
             edge_dist_x = min(ix, 11 - ix)
             edge_dist_y = min(iy, 4 - iy)
             lux_val = int(500 + 15 * (edge_dist_x + edge_dist_y) + (ix * iy % 7 - 3))
             msp.add_text(f"{lux_val} lx", dxfattribs={"layer": "LUX_GRID", "height": 1.5}).set_placement((arm_x - 5, arm_y - 8))
 
-    # Ölçülendirmeler (Gerçek DIMENSION)
+
     msp.add_linear_dim(base=(hx, hy + hh + 20), p1=(hx, hy + hh), p2=(hx + hw, hy + hh),
                        dimstyle="EZ_CURVED", dxfattribs={"layer": "OLCU", "text": "60 000 mm (60.0 m)"})
     msp.add_linear_dim(base=(hx - 18, hy), p1=(hx, hy), p2=(hx, hy + hh),
                        angle=90, dimstyle="EZ_CURVED", dxfattribs={"layer": "OLCU", "text": "24 000 mm (24.0 m)"})
 
-    # Pafta Alt Bilgi Tablosu: EN 12464-1 Aydınlatma Hesap Tablosu (x=30..450, y=30..230)
+
     tx_base = 30
     ty_base = 40
     msp.add_lwpolyline([(tx_base, ty_base), (tx_base + 400, ty_base),
                         (tx_base + 400, ty_base + 190), (tx_base, ty_base + 190), (tx_base, ty_base)],
                        dxfattribs={"layer": "ANTET", "const_width": 0.4})
-    
+
     msp.add_text("EN 12464-1 IŞIK AKISI (LÜMEN YÖNTEMİ) HESAP TABLOSU",
                  dxfattribs={"layer": "ANTET", "height": 3.2}).set_placement((tx_base + 10, ty_base + 175))
-    
+
     table_lines = [
         "Mahal Tanımı: Endüstriyel Fabrika İmalat ve Montaj Holü",
         "Hol Boyutları: Uzunluk = 60.0 m, Genişlik = 24.0 m, Tavan Yüksekliği = 8.0 m",
@@ -151,12 +140,12 @@ def uret_pafta1(dxf_yolu):
     print(f"Pafta 1 DXF kaydedildi: {dxf_yolu}")
 
 def uret_pafta2(dxf_yolu):
-    """Pafta 2: Acil Aydınlatma (EN 1838), Kaçış Güzergâhları ve Aydınlatma Panosu Yük Planı"""
+
     doc = ezdxf.new("R2010", setup=True)
     setup_layers(doc)
     msp = doc.modelspace()
 
-    # A1 Çerçeve
+
     msp.add_lwpolyline([(0, 0), (841, 0), (841, 594), (0, 594), (0, 0)], dxfattribs={"layer": "CERCEVE", "const_width": 0.7})
     msp.add_lwpolyline([(10, 10), (831, 10), (831, 584), (10, 584), (10, 10)], dxfattribs={"layer": "CERCEVE", "const_width": 0.35})
 
@@ -165,22 +154,22 @@ def uret_pafta2(dxf_yolu):
     hx, hy = 30, 280
     hw, hh = 600, 240
 
-    # Dış Duvarlar
+
     msp.add_lwpolyline([(hx, hy), (hx + hw, hy), (hx + hw, hy + hh), (hx, hy + hh), (hx, hy)],
                        dxfattribs={"layer": "DUVAR", "const_width": 0.8})
 
-    # Acil Çıkış Kapıları (4 adet acil çıkış kapısı)
+
     doors = [(hx + 80, hy), (hx + hw - 80, hy), (hx + 80, hy + hh), (hx + hw - 80, hy + hh)]
     for dx, dy in doors:
         msp.add_lwpolyline([(dx - 10, dy), (dx + 10, dy)], dxfattribs={"layer": "ACIL_GUZERGAH", "const_width": 1.2})
         msp.add_text("ACİL ÇIKIŞ (EXIT)", dxfattribs={"layer": "ARMATUR_ACIL", "height": 2.2}).set_placement((dx - 15, dy - 7 if dy == hy else dy + 5))
 
-    # Ana Kaçış Koridorları (Yeşil Kesikli Çizgi - EN 1838)
+
     msp.add_lwpolyline([(hx + 80, hy), (hx + 80, hy + hh)], dxfattribs={"layer": "ACIL_GUZERGAH", "const_width": 0.6})
     msp.add_lwpolyline([(hx + hw - 80, hy), (hx + hw - 80, hy + hh)], dxfattribs={"layer": "ACIL_GUZERGAH", "const_width": 0.6})
     msp.add_lwpolyline([(hx + 80, hy + 120), (hx + hw - 80, hy + 120)], dxfattribs={"layer": "ACIL_GUZERGAH", "const_width": 0.6})
 
-    # Acil Aydınlatma ve Yönlendirme Armatürleri (3 Saat Bataryalı LED Kit)
+
     for em_x in range(hx + 80, hx + hw - 70, 40):
         msp.add_circle((em_x, hy + 120), 3.5, dxfattribs={"layer": "ARMATUR_ACIL"})
         msp.add_text("E", dxfattribs={"layer": "ARMATUR_ACIL", "height": 2.0}).set_placement((em_x - 1.2, hy + 118))
@@ -188,11 +177,11 @@ def uret_pafta2(dxf_yolu):
     msp.add_text("EN 1838 MERKEZİ KAÇIŞ GÜZERGAHI (E >= 1.0 lux, U0 >= 0.10)",
                  dxfattribs={"layer": "ACIL_GUZERGAH", "height": 2.5}).set_placement((hx + 120, hy + 130))
 
-    # Aydınlatma Panosu (AYP) Tek Hat Şeması (x=30..500, y=30..240)
+
     px, py = 40, 40
     msp.add_lwpolyline([(px, py), (px + 450, py), (px + 450, py + 190), (px, py + 190), (px, py)],
                        dxfattribs={"layer": "ANTET", "const_width": 0.4})
-    
+
     msp.add_text("FABRİKA AYDINLATMA PANOSU (AYP) DAĞITIM VE YÜK CETVELİ",
                  dxfattribs={"layer": "ANTET", "height": 3.0}).set_placement((px + 10, py + 175))
 

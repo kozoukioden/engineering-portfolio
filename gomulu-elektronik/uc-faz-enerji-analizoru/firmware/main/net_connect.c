@@ -1,10 +1,4 @@
-/*
- * Author : Hakan OGUZ - Elektrik Elektronik Muhendisi
- * Project: Three-phase energy analyzer node (ESP32 / ESP-IDF)
- * Date   : 2026-10-22
- * License: MIT
- * Desc   : Wi-Fi station bring-up. Credentials come from menuconfig (see Kconfig.projbuild).
- */
+// Hakan OĞUZ - Elektrik Elektronik Mühendisi
 #include <string.h>
 #include "net_connect.h"
 #include "freertos/FreeRTOS.h"

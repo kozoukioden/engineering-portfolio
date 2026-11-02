@@ -1,8 +1,4 @@
-"""
-EV PMSM FOC Sürücü Simülasyon Sonuçlarını Çizdirme
-Yazar: Hakan OĞUZ (Elektrik-Elektronik Mühendisi)
-"""
-
+# Hakan OĞUZ - Elektrik Elektronik Mühendisi
 import pandas as pd
 import matplotlib.pyplot as plt
 import os
@@ -26,9 +22,9 @@ rpm = df['rpm']
 torque = df['torque_nm']
 iq = df['iq_a']
 
-# 1. Hız Yanıtı Grafiği
+
 fig, ax = plt.subplots(figsize=(8, 4.5))
-# Referans hız profili (0.02s'de 1500 rpm)
+
 ref_rpm = [0.0 if t < 0.02 else 1500.0 for t in time]
 ax.plot(time * 1000, ref_rpm, 'k--', lw=1.5, label='Hız Referansı (1500 d/dk)')
 ax.plot(time * 1000, rpm, 'b-', lw=2.0, label='PMSM Rotor Hızı (Ölçülen)')
@@ -47,7 +43,7 @@ plt.tight_layout()
 plt.savefig(os.path.join(out_dir, "hiz_yaniti.png"), dpi=300)
 plt.close()
 
-# 2. Tork ve Iq Akımı Grafiği
+
 fig, (ax1, ax2) = plt.subplots(2, 1, figsize=(8, 6), sharex=True)
 
 ax1.plot(time * 1000, torque, 'r-', lw=1.8, label='Elektromanyetik Tork (Te)')

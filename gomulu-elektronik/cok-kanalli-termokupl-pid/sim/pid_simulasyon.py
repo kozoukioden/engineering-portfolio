@@ -1,10 +1,4 @@
-"""
-Author : Hakan OĞUZ - Elektrik Elektronik Mühendisi
-Project: Çok Kanallı Termokupl Veri Toplama ve PID Isı Kontrolü
-Date   : 2026-10-26
-License: MIT
-Desc   : Termal sistem diferansiyel denklem simülasyonu, anti-windup PID basamak yanıtı ve MAX31856 doğrulama
-"""
+# Hakan OĞUZ - Elektrik Elektronik Mühendisi
 import os
 import matplotlib.pyplot as plt
 
@@ -19,8 +13,8 @@ def max31856_raw_to_celsius(b0, b1, b2):
     return raw * 0.0078125
 
 def test_sensor_conversion():
-    # 100.0 °C doğrulaması -> raw = 100 / 0.0078125 = 12800 -> 12800 << 5 = 409600 (0x064000)
-    # b0 = 0x06, b1 = 0x40, b2 = 0x00
+
+
     temp_calc = max31856_raw_to_celsius(0x06, 0x40, 0x00)
     assert abs(temp_calc - 100.0) < 1e-4, f"Sensor conversion mismatch: {temp_calc}"
     print(f"MAX31856 Dönüşüm Doğrulandı: 0x064000 -> {temp_calc:.4f} °C")
@@ -41,10 +35,10 @@ class AntiWindupPID:
         p_term = self.kp * error
         self.integral += error * self.dt
         d_term = -self.kd * (measurement - self.prev_measurement) / self.dt
-        
+
         raw_out = p_term + (self.ki * self.integral) + d_term
-        
-        # Clamping anti-windup
+
+
         out = raw_out
         if raw_out > self.out_max:
             out = self.out_max
@@ -54,7 +48,7 @@ class AntiWindupPID:
             out = self.out_min
             if error < 0:
                 self.integral -= error * self.dt
-                
+
         self.prev_measurement = measurement
         return out
 
@@ -62,18 +56,17 @@ def run_thermal_simulation():
     os.makedirs(SEK, exist_ok=True)
     test_sensor_conversion()
 
-    # Birinci dereceden gecikmeli ısıtıcı modeli:
-    # dT/dt = (1/tau) * (k_plant * Duty - (T - T_amb))
-    tau_plant = 45.0    # Termal zaman sabiti [s] (termal kütle)
-    k_plant   = 2.2     # Isıtıcı kazancı [°C / %PWM] -> %100 PWM ile ortam üstü ~220 °C artış
-    T_amb     = 25.0    # Ortam sıcaklığı [°C]
-    dt        = 0.5     # Kontrol adımı [s]
-    total_time = 300.0  # Toplam simülasyon süresi [s] (5 dakika)
+
+    tau_plant = 45.0
+    k_plant   = 2.2
+    T_amb     = 25.0
+    dt        = 0.5
+    total_time = 300.0
 
     steps = int(total_time / dt)
     t_vec = [i * dt for i in range(steps)]
 
-    # Hedef Profil: t=0..150s: 180 °C, t=150s..300s: 210 °C
+
     sp_vec = [180.0 if t < 150.0 else 210.0 for t in t_vec]
 
     pid = AntiWindupPID(kp=3.5, ki=0.08, kd=1.5, dt=dt, out_min=0.0, out_max=100.0)
@@ -85,15 +78,15 @@ def run_thermal_simulation():
     for i in range(steps):
         sp = sp_vec[i]
         duty = pid.compute(sp, T_curr)
-        
-        # Termal durum güncellemesi (Euler)
+
+
         dT = (1.0 / tau_plant) * (k_plant * duty - (T_curr - T_amb)) * dt
         T_curr += dT
-        
+
         temp_history.append(T_curr)
         pwm_history.append(duty)
 
-    # 1. Grafik: PID Sıcaklık Takibi ve Setpoint Yanıtı
+
     plt.figure(figsize=(10, 6))
     plt.subplot(2, 1, 1)
     plt.plot(t_vec, sp_vec, 'r--', label='Hedef Sıcaklık (Setpoint) [°C]')
@@ -115,8 +108,8 @@ def run_thermal_simulation():
     plt.savefig(os.path.join(SEK, "pid_sicaklik_yaniti.png"), dpi=150)
     plt.close()
 
-    # 2. Grafik: 4 Kanal Veri Toplama Karşılaştırması
-    ch_offsets = [0.0, -12.0, 8.0, -22.0] # Farklı bölgelerin sıcaklık gradyantı
+
+    ch_offsets = [0.0, -12.0, 8.0, -22.0]
     plt.figure(figsize=(10, 5))
     for ch in range(4):
         ch_temps = [T + ch_offsets[ch] for T in temp_history]

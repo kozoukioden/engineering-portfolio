@@ -1,33 +1,28 @@
-% simule_et.m
-% Simulink modelini çalıştırır, sonuçları çeker ve grafikleri üretir.
 % Hakan OĞUZ - Elektrik Elektronik Mühendisi
-
 clear; clc; close all;
 
-% Çalışma dizini
+
 cd(fileparts(mfilename('fullpath')));
 
-% Parametreleri yükle
+
 parametreler;
 
-% 1. LCL Filtre Bode Eğrisi (Rezonans Zirvesi ve Sönümleme İncelemesi)
-% s-domeninde transfer fonksiyonları:
-% I_grid(s) / V_inv(s)
+
 f_vec = logspace(1, 4.5, 1000);
 w_vec = 2 * pi * f_vec;
 s = 1j * w_vec;
 
-% Sönümsüz (Rd = 0)
+
 Y_undamped = 1 ./ ( (L1*L2*C)*(s.^3) + (R1*L2 + R2*L1)*C*(s.^2) + (L1+L2)*s + (R1+R2) );
 
-% Pasif seri sönümleme (Rd = 1.2 Ohm)
+
 Y_damped   = (C*Rd*s + 1) ./ ( (L1*L2*C)*(s.^3) + (L1*L2 + C*Rd*(L1+L2))*(s.^2) + (L1+L2 + C*Rd*(R1+R2))*s + (R1+R2) );
 
 mag_undamped = 20 * log10(abs(Y_undamped));
 mag_damped   = 20 * log10(abs(Y_damped));
 phase_damped = unwrap(angle(Y_damped)) * 180 / pi;
 
-% Grafik 1: LCL Frekans Yanıtı
+
 fig1 = figure('Name', 'LCL Filtre Frekans Cevabı', 'Position', [100, 100, 800, 600], 'Visible', 'off');
 
 subplot(2, 1, 1);
@@ -51,7 +46,7 @@ ylabel('Faz [derece]');
 saveas(fig1, fullfile('sekiller', 'bode_rezonans.png'));
 close(fig1);
 
-% 2. Simulink Modelini Çalıştır
+
 fprintf('Simulink modeli (inverter_lcl_control.slx) koşturuluyor...\n');
 sim_out = sim('model/inverter_lcl_control.slx');
 
@@ -59,11 +54,11 @@ t_out = sim_out.sim_Id.Time;
 Id_out = sim_out.sim_Id.Data;
 Iq_out = sim_out.sim_Iq.Data;
 
-% Aktif ve reaktif güç: P = 1.5 * Vd * Id, Q = -1.5 * Vd * Iq
+
 P_out = 1.5 * V_pk * Id_out;
 Q_out = -1.5 * V_pk * Iq_out;
 
-% Grafik 2: dq Akım ve Güç Basamak Yanıtı
+
 fig2 = figure('Name', 'dq Akım ve Güç Yanıtı', 'Position', [100, 100, 850, 650], 'Visible', 'off');
 
 subplot(2, 1, 1);
@@ -86,23 +81,23 @@ legend('Location', 'east');
 saveas(fig2, fullfile('sekiller', 'dq_akim_guc.png'));
 close(fig2);
 
-% 3. Üç Faz Şebeke Akımları (Ters Park/Clarke ile)
+
 theta_grid = mod(w_grid * t_out, 2*pi);
 
-% Ters Park
+
 I_alpha = cos(theta_grid) .* Id_out - sin(theta_grid) .* Iq_out;
 I_beta  = sin(theta_grid) .* Id_out + cos(theta_grid) .* Iq_out;
 
-% Ters Clarke
+
 Ia = I_alpha;
 Ib = -0.5 * I_alpha + (sqrt(3)/2) * I_beta;
 Ic = -0.5 * I_alpha - (sqrt(3)/2) * I_beta;
 Va = V_pk * cos(theta_grid);
 
-% Grafik 3: Üç Faz Şebeke Akım ve Gerilim Dalga Biçimleri
+
 fig3 = figure('Name', 'Şebeke Akım ve Gerilimleri', 'Position', [100, 100, 850, 600], 'Visible', 'off');
 
-% Son 3 periyot incelemesi (90 - 150 ms)
+
 idx = t_out >= 0.08 & t_out <= 0.14;
 t_ms = t_out(idx) * 1e3;
 

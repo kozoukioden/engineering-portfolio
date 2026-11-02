@@ -1,9 +1,4 @@
-/**
- * @file main.c
- * @brief ESP32 Otomatik Kompanzasyon Rölesi Host Doğrulama Testi
- * @author Hakan OĞUZ - Elektrik Elektronik Mühendisi
- */
-
+// Hakan OĞUZ - Elektrik Elektronik Mühendisi
 #include <stdio.h>
 #include "pfc_relay.h"
 
@@ -13,8 +8,7 @@ int main(void) {
     printf("Gelistirici: Hakan OGUZ (Elektrik-Elektronik Muhendisi)\n");
     printf("====================================================\n\n");
 
-    // 12 Kademe Kondansatör Grubu (Toplam 300 kVAr)
-    // 2x 10 kVAr, 4x 20 kVAr, 6x 30 kVAr
+
     float step_ratings[12] = {10, 10, 20, 20, 20, 20, 30, 30, 30, 30, 30, 30};
 
     pfc_controller_t pfc;
@@ -23,10 +17,10 @@ int main(void) {
     printf("[1] Baslangic Durumu:\n");
     printf("    Hedef cos phi: %.2f | Toplam Kademe: 12 (300 kVAr)\n\n", pfc.config.target_cos_phi);
 
-    // Test Senaryosu: 150 kW aktif güç, 110 kVAr indüktif reaktif yük (cos phi ~ 0.80)
+
     float P = 150.0f;
     float Q_load = 110.0f;
-    float dt = 5.0f; // 5 sn dongu
+    float dt = 5.0f;
 
     printf("[2] Yuke Gore Kademe Alma Dongusu:\n");
     for (int step = 0; step < 10; step++) {

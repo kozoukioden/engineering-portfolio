@@ -1,8 +1,4 @@
-% build_manipulator_model.m
-% 6-DOF Manipülatör kinematik ve spline yörünge Simulink modelini kurar.
-% Model: 'model/robot_yorunge_denetimi.slx'
 % Hakan OĞUZ - Elektrik Elektronik Mühendisi
-
 robot_parametreleri;
 
 mdl = 'robot_yorunge_denetimi';
@@ -13,11 +9,11 @@ end
 new_system(mdl);
 set_param(mdl, 'Solver', 'ode4', 'FixedStep', num2str(traj.dt), 'StopTime', num2str(traj.t_total));
 
-% 1. Zaman Kaynağı (Ramp / Clock)
+
 add_block('simulink/Sources/Clock', [mdl '/Zaman_Sayaci']);
 set_param([mdl '/Zaman_Sayaci'], 'Position', [40, 95, 70, 125]);
 
-% 2. 5. Derece Spline Enterpolatörü Alt Sistemi (Quintic Interpolator)
+
 sub_traj = [mdl '/Spline_Enterpolator'];
 add_block('simulink/Ports & Subsystems/Subsystem', sub_traj);
 set_param(sub_traj, 'Position', [140, 60, 290, 160]);
@@ -25,12 +21,12 @@ Simulink.SubSystem.deleteContents(sub_traj);
 
 add_block('simulink/Ports & Subsystems/In1', [sub_traj '/t_in'], 'Position', [30, 65, 60, 80]);
 
-% MATLAB Function Bloğu ile C2 Sürekli Yörünge Fonksiyonu
+
 fun_blk = [sub_traj '/Quintic_Profile_Gen'];
 add_block('simulink/User-Defined Functions/MATLAB Function', fun_blk);
 set_param(fun_blk, 'Position', [120, 40, 260, 105]);
 
-% Blok içi kodunu ayarla
+
 config = Simulink.ConfigSet;
 matlabFunctionBlock = find(slroot, '-isa', 'Stateflow.EMChart', 'Path', fun_blk);
 matlabFunctionBlock.Script = sprintf([...
@@ -59,7 +55,7 @@ add_line(sub_traj, 'Quintic_Profile_Gen/1', 'q_out/1');
 add_line(sub_traj, 'Quintic_Profile_Gen/2', 'qd_out/1');
 add_line(sub_traj, 'Quintic_Profile_Gen/3', 'qdd_out/1');
 
-% 3. İleri Kinematik ve Uç Nokta Konum İzleme Alt Sistemi
+
 sub_fk = [mdl '/Manipulator_Kinematics'];
 add_block('simulink/Ports & Subsystems/Subsystem', sub_fk);
 set_param(sub_fk, 'Position', [360, 60, 520, 160]);
@@ -96,11 +92,11 @@ add_block('simulink/Ports & Subsystems/Out1', [sub_fk '/p_end_effector'], 'Posit
 add_line(sub_fk, 'q_act/1', 'DH_Forward_Kinematics/1');
 add_line(sub_fk, 'DH_Forward_Kinematics/1', 'p_end_effector/1');
 
-% 4. Ana Model Hatları
+
 add_line(mdl, 'Zaman_Sayaci/1', 'Spline_Enterpolator/1');
 add_line(mdl, 'Spline_Enterpolator/1', 'Manipulator_Kinematics/1');
 
-% Loglama blokları (Workspace kayıtları)
+
 add_block('simulink/Sinks/To Workspace', [mdl '/Log_q']);
 set_param([mdl '/Log_q'], 'VariableName', 'sim_q', 'SaveFormat', 'Timeseries', 'Position', [360, 15, 430, 40]);
 add_line(mdl, 'Spline_Enterpolator/1', 'Log_q/1');
@@ -113,7 +109,7 @@ add_block('simulink/Sinks/To Workspace', [mdl '/Log_p_xyz']);
 set_param([mdl '/Log_p_xyz'], 'VariableName', 'sim_p', 'SaveFormat', 'Timeseries', 'Position', [590, 95, 660, 125]);
 add_line(mdl, 'Manipulator_Kinematics/1', 'Log_p_xyz/1');
 
-% Modeli kaydet
+
 model_path = fullfile(fileparts(mfilename('fullpath')), 'model', 'robot_yorunge_denetimi.slx');
 save_system(mdl, model_path);
 close_system(mdl);

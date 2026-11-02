@@ -1,16 +1,4 @@
-/*
- * Author : Hakan OGUZ - Elektrik Elektronik Muhendisi
- * Project: Three-phase energy analyzer node - host validation harness
- * Date   : 2026-10-22
- * License: MIT
- * Desc   : Compiles the real firmware DSP core (power_metrics.c) on the host, feeds it
- *          synthetic samples (samples.csv) and prints the computed metrics. Used to
- *          verify the embedded algorithm against an independent numpy reference.
- *
- * Build : gcc -O2 -std=c11 host_test.c ../firmware/components/power_metrics/power_metrics.c \
- *              -I../firmware/components/power_metrics -lm -o host_test
- * Run   : ./host_test samples.csv 256
- */
+// Hakan OĞUZ - Elektrik Elektronik Mühendisi
 #include <stdio.h>
 #include <stdlib.h>
 #include "power_metrics.h"
@@ -32,7 +20,7 @@ int main(int argc, char **argv)
 
     char line[512];
     int n = 0;
-    /* skip header */
+
     if (!fgets(line, sizeof(line), f)) { fclose(f); return 1; }
     while (fgets(line, sizeof(line), f) && n < MAXN) {
         double a, b, c, d, e, g;
@@ -51,7 +39,7 @@ int main(int argc, char **argv)
         return 1;
     }
 
-    /* machine-readable: one line per phase + total */
+
     printf("phase,v_rms,i_rms,p,s,q,pf,thd_v,thd_i\n");
     const char *names = "ABC";
     for (int p = 0; p < 3; ++p) {

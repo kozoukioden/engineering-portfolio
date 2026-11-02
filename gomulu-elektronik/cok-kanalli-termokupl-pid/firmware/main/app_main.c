@@ -1,11 +1,4 @@
-/*
- * Author : Hakan OĞUZ - Elektrik Elektronik Mühendisi
- * Project: Çok Kanallı Termokupl Veri Toplama ve PID Isı Kontrolü
- * Date   : 2026-10-26
- * License: MIT
- * Desc   : 4 Kanallı SPI Termokupl Okuma ve Isıtıcı PWM Sürücü Görevi
- */
-
+// Hakan OĞUZ - Elektrik Elektronik Mühendisi
 #include <stdio.h>
 #include <string.h>
 
@@ -22,28 +15,28 @@
 static const char *TAG = "THERMO_PID";
 
 #define NUM_CHANNELS        4
-#define SETPOINT_TEMP_C     185.0f  /* Hedef Proses Sıcaklığı (Örn: Plastik Enjeksiyon / Fırın) */
-#define OVERTEMP_ALARM_C    220.0f  /* Emniyet Kesme Eşiği */
+#define SETPOINT_TEMP_C     185.0f
+#define OVERTEMP_ALARM_C    220.0f
 
 #ifdef ESP_PLATFORM
-/* 4 Kanal için bağımsız CS (Chip Select) Pinleri */
+
 static const int cs_pins[NUM_CHANNELS] = { 15, 16, 17, 18 };
 
 static void temp_control_task(void *pvParameters)
 {
     pid_controller_t heater_pid;
-    /* Kp = 4.5, Ki = 0.25, Kd = 1.2, dt = 0.5 s, PWM = %0 ... %100 */
+
     pid_init(&heater_pid, 4.5f, 0.25f, 1.2f, 0.5f, 0.0f, 100.0f);
 
     float temps[NUM_CHANNELS] = { 25.0f, 25.0f, 25.0f, 25.0f };
 
     while (1) {
-        /* SPI üzerinden 4 kanalı tara */
+
         for (int ch = 0; ch < NUM_CHANNELS; ch++) {
-            /* max31856_read_channel(ch, &temps[ch]); */
+
         }
 
-        /* Ana ısıtıcı kontrol kanalı (Kanal 0) */
+
         float current_temp = temps[0];
         float pwm_duty = 0.0f;
 

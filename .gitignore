@@ -55,7 +55,6 @@ samples.csv
 _tools/
 *.dxf
 *.kicad_prl
-autocad/**/src/
 
 # PCB ara dosyalari
 *.dsn

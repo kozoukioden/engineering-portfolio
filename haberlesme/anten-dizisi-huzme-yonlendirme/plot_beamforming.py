@@ -1,8 +1,4 @@
-"""
-Akıllı Anten Dizi Faktörü, MVDR Sıfır Atma ve Yama Anten Çizimi
-Yazar: Hakan OĞUZ (Elektrik-Elektronik Mühendisi)
-"""
-
+# Hakan OĞUZ - Elektrik Elektronik Mühendisi
 import pandas as pd
 import numpy as np
 import matplotlib.pyplot as plt
@@ -18,29 +14,29 @@ os.makedirs(out_dir, exist_ok=True)
 
 csv_path = os.path.join(base_dir, "beamforming_patterns.csv")
 
-# 1. Mikroşerit Yama Geometrisi Çizimi
+
 fig, ax = plt.subplots(figsize=(7, 6))
 
-# Alt Tabaka (Substrat): Wg x Lg (50 mm x 40 mm)
+
 ax.fill_between([-25, 25], -20, 20, color='darkkhaki', alpha=0.4, label='FR4 Substrat (h=1.6mm, εr=4.4)')
 
-# Bakır Yama: W=37.3 mm, L=28.8 mm
+
 W = 37.3
 L = 28.8
-y0 = 8.8 # Inset derinliği
-w_feed = 3.05 # 50 Ohm hat genişliği
-g_notch = 1.0 # Inset boşluk genişliği
+y0 = 8.8
+w_feed = 3.05
+g_notch = 1.0
 
-# Yama Gövdesi (Turuncu bakır)
+
 ax.fill_between([-W/2, W/2], -L/2, L/2, color='chocolate', alpha=0.85, label='Bakır Yama (W=37.3mm, L=28.8mm)')
 
-# Inset Besleme Kesikleri (Boşluk)
+
 ax.fill_between([-w_feed/2 - g_notch, w_feed/2 + g_notch], -L/2, -L/2 + y0, color='darkkhaki', alpha=1.0)
 
-# 50 Ohm Besleme Hattı (Microstrip Feedline)
+
 ax.fill_between([-w_feed/2, w_feed/2], -20, -L/2 + y0, color='chocolate', alpha=0.9, label='50Ω Mikroşerit Besleme Hattı')
 
-# Ölçü Okları ve Etiketler
+
 ax.annotate(f"W = {W} mm", xy=(0, L/2 + 2), ha='center', fontweight='bold')
 ax.annotate(f"L = {L} mm", xy=(W/2 + 3, 0), va='center', rotation=-90, fontweight='bold')
 ax.annotate(f"y0 = {y0} mm (Inset)", xy=(w_feed/2 + g_notch + 1, -L/2 + y0/2), va='center', fontsize=9, fontweight='bold')
@@ -58,7 +54,7 @@ plt.tight_layout()
 plt.savefig(os.path.join(out_dir, "mikroserit_yama_geometrisi.png"), dpi=300)
 plt.close()
 
-# 2. Huzme Şekillendirme ve MVDR Sıfır Atma Grafiği
+
 if os.path.exists(csv_path):
     df = pd.read_csv(csv_path)
     th = df['theta_deg']
@@ -68,12 +64,12 @@ if os.path.exists(csv_path):
 
     fig, (ax1, ax2) = plt.subplots(1, 2, figsize=(12, 5))
 
-    # Kartezyen Çizim
+
     ax1.plot(th, af_uni, 'gray', linestyle=':', lw=1.5, label='Uniform Dizi (SLL ~ -13 dB)')
     ax1.plot(th, af_cheb, 'g--', lw=1.8, label='Dolph-Chebyshev (SLL = -26 dB)')
     ax1.plot(th, af_mvdr, 'b-', lw=2.2, label='MVDR Adaptif Huzme (Girişim Bastırma)')
 
-    # Hedef ve Jammer İşaretleri
+
     ax1.axvline(15, color='blue', linestyle='--', alpha=0.7)
     ax1.annotate("Hedef Sinyal (+15°)\n0 dB Kazanç", xy=(15, 0), xytext=(22, 5),
                  arrowprops=dict(arrowstyle="->", color="blue", lw=1.5), fontweight='bold')
@@ -94,17 +90,17 @@ if os.path.exists(csv_path):
     ax1.grid(True, linestyle='--', alpha=0.6)
     ax1.legend(loc='lower left')
 
-    # Polar Çizim
+
     ax_polar = plt.subplot(1, 2, 2, projection='polar')
     th_rad = np.deg2rad(th)
-    # dB'yi pozitif lineer yarıçapa ölçekle (-60 dB -> 0, 0 dB -> 1)
+
     r_uni = np.maximum((af_uni + 60) / 60.0, 0)
     r_mvdr = np.maximum((af_mvdr + 60) / 60.0, 0)
 
     ax_polar.plot(th_rad, r_uni, 'gray', linestyle=':', lw=1.5, label='Uniform')
     ax_polar.plot(th_rad, r_mvdr, 'b-', lw=2.0, label='MVDR')
-    ax_polar.set_theta_zero_location('N') # 0 derece tepe
-    ax_polar.set_theta_direction(-1)      # saat yönünde
+    ax_polar.set_theta_zero_location('N')
+    ax_polar.set_theta_direction(-1)
     ax_polar.set_title("Polar Işıma Diyagramı", fontweight='bold', va='bottom')
     ax_polar.legend(loc='lower left', bbox_to_anchor=(-0.1, -0.15))
 

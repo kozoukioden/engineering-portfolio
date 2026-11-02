@@ -1,9 +1,4 @@
-# Author : Hakan OGUZ - Elektrik Elektronik Muhendisi
-# Project: Three-phase energy analyzer node - signal generator / reference
-# Date   : 2026-10-22
-# License: MIT
-# Desc   : Builds synthetic 3-phase V/I with known harmonics, writes samples.csv,
-#          computes an independent numpy reference, and plots waveforms + spectrum.
+# Hakan OĞUZ - Elektrik Elektronik Mühendisi
 import os
 import json
 import numpy as np
@@ -17,17 +12,17 @@ SEK = os.path.join(ROOT, "sekiller")
 os.makedirs(SEK, exist_ok=True)
 
 F0 = 50.0
-SPC = 256                 # samples per cycle
+SPC = 256
 CYCLES = 10
-N = SPC * CYCLES          # 2560 samples
-FS = F0 * SPC             # 12800 Hz
+N = SPC * CYCLES
+FS = F0 * SPC
 
-VRMS1 = 230.0             # fundamental phase-neutral voltage (RMS)
-IRMS1 = 20.0              # fundamental current (RMS)
-PF1 = 0.90                # fundamental displacement power factor (lagging)
+VRMS1 = 230.0
+IRMS1 = 20.0
+PF1 = 0.90
 PHI1 = np.arccos(PF1)
 
-# harmonic content as fraction of the FUNDAMENTAL amplitude (order: fraction, phase[rad])
+
 V_HARM = {3: (0.015, 0.0), 5: (0.025, 0.0), 7: (0.010, 0.0)}
 I_HARM = {5: (0.080, 0.6), 7: (0.050, -0.4), 11: (0.030, 1.1)}
 
@@ -37,7 +32,7 @@ t = np.arange(N) / FS
 
 
 def phase_signals(delta):
-    """One phase shifted by 'delta' rad on the fundamental (both V and I)."""
+
     v = VRMS1 * SQRT2 * np.cos(w * t + delta)
     for h, (frac, ph) in V_HARM.items():
         v += VRMS1 * SQRT2 * frac * np.cos(h * (w * t + delta) + ph)
@@ -51,13 +46,12 @@ va, ia = phase_signals(0.0)
 vb, ib = phase_signals(-2.0 * np.pi / 3.0)
 vc, ic = phase_signals(+2.0 * np.pi / 3.0)
 
-# --- write samples.csv (columns consumed by the C host test) -----------------
+
 data = np.column_stack([va, ia, vb, ib, vc, ic]).astype(np.float64)
 np.savetxt(os.path.join(HERE, "samples.csv"), data, delimiter=",",
            header="va,ia,vb,ib,vc,ic", comments="", fmt="%.6f")
 
 
-# --- independent numpy reference metrics (same definitions as the C core) -----
 def ref_metrics(v, i):
     vrms = np.sqrt(np.mean(v * v))
     irms = np.sqrt(np.mean(i * i))
@@ -94,7 +88,7 @@ ref["TOTAL"]["pf"] = ref["TOTAL"]["p"] / ref["TOTAL"]["s"]
 with open(os.path.join(HERE, "reference.json"), "w") as f:
     json.dump(ref, f, indent=2)
 
-# analytic THD expectations (from injected content)
+
 thd_v_an = np.sqrt(sum(f * f for f, _ in V_HARM.values()))
 thd_i_an = np.sqrt(sum(f * f for f, _ in I_HARM.values()))
 
@@ -106,7 +100,7 @@ print("Analytic THDv=%.3f%%  THDi=%.3f%%" % (thd_v_an * 100, thd_i_an * 100))
 print("3-phase: P=%.1f W  S=%.1f VA  PF=%.4f"
       % (ref["TOTAL"]["p"], ref["TOTAL"]["s"], ref["TOTAL"]["pf"]))
 
-# --- plot 1: waveforms (2 cycles of phase A) ---------------------------------
+
 ns = 2 * SPC
 tt = t[:ns] * 1000.0
 fig, ax1 = plt.subplots(figsize=(9, 4.2))
@@ -124,7 +118,7 @@ fig.tight_layout()
 fig.savefig(os.path.join(SEK, "waveforms.png"), dpi=150)
 plt.close(fig)
 
-# --- plot 2: harmonic spectrum of phase-A current ----------------------------
+
 k = np.arange(N)
 orders = np.arange(1, 16)
 mags = []

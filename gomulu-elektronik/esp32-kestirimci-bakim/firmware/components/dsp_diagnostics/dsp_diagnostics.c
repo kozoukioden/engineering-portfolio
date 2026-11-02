@@ -1,11 +1,4 @@
-/*
- * Author : Hakan OĞUZ - Elektrik Elektronik Mühendisi
- * Project: ESP32 Kestirimci Bakım Düğümü (Titreşim ve MCSA Teşhisi)
- * Date   : 2026-10-27
- * License: MIT
- * Desc   : Rulman arıza formülleri ve titreşim entegrasyonu
- */
-
+// Hakan OĞUZ - Elektrik Elektronik Mühendisi
 #include "dsp_diagnostics.h"
 #include <math.h>
 
@@ -28,17 +21,17 @@ float compute_vibration_velocity_rms(const float *accel_g, int length, float dt)
 {
     if (!accel_g || length <= 1) return 0.0f;
 
-    /* g -> mm/s^2 dönüşümü (1 g = 9806.65 mm/s^2) */
+
     const float G_TO_MM_S2 = 9806.65f;
 
-    /* DC bileşeni kaldır (High-pass ön filtre) */
+
     float mean = 0.0f;
     for (int i = 0; i < length; i++) {
         mean += accel_g[i];
     }
     mean /= (float)length;
 
-    /* Trapezoid sayısal integrasyon ile hız dalga formu [mm/s] */
+
     float sum_sq = 0.0f;
     float current_vel = 0.0f;
 
@@ -47,7 +40,7 @@ float compute_vibration_velocity_rms(const float *accel_g, int length, float dt)
         float a1 = (accel_g[i] - mean) * G_TO_MM_S2;
         current_vel += 0.5f * (a0 + a1) * dt;
 
-        /* Yüksek geçiren sızıntılı entegratör (DC kaymasını önler) */
+
         current_vel *= 0.995f;
         sum_sq += current_vel * current_vel;
     }

@@ -1,10 +1,4 @@
-"""
-Author : Hakan OĞUZ - Elektrik Elektronik Mühendisi
-Project: CAN (TWAI) Tabanlı Dağıtık Sensör Düğümü
-Date   : 2026-10-26
-License: MIT
-Desc   : CAN telemetri serileştirme doğrulaması, hata sayaçları ve bus-off kurtarma simülatörü
-"""
+# Hakan OĞUZ - Elektrik Elektronik Mühendisi
 import struct
 import math
 import matplotlib.pyplot as plt
@@ -29,11 +23,11 @@ def run_simulation():
     os.makedirs(SEK, exist_ok=True)
     N = 200
     t = [i * 0.05 for i in range(N)]
-    
-    # Sentetik sıcaklık ve titreşim sinyalleri
+
+
     temp_in = [35.0 + 5.0 * math.sin(0.05 * i) + 0.2 * math.cos(0.5 * i) for i in range(N)]
     ax_in   = [1.2 * math.sin(0.3 * i) + 0.1 * math.sin(1.2 * i) for i in range(N)]
-    
+
     temp_out = []
     ax_out   = []
     errors_temp = []
@@ -52,7 +46,7 @@ def run_simulation():
     print(f"Telemetri Doğrulama -> Maks Sıcaklık Hatası: {max_err_temp:.5f} C (Kuantalama limiti: 0.005 C)")
     print(f"Telemetri Doğrulama -> Maks İvme Hatası    : {max_err_ax:.5f} g (Kuantalama limiti: 0.0005 g)")
 
-    # 1. Grafik: Telemetri Sinyalleri ve Kuantalama Doğruluğu
+
     plt.figure(figsize=(10, 6))
     plt.subplot(2, 1, 1)
     plt.plot(t, temp_in, 'r--', label='Gerçek Sıcaklık [C]')
@@ -73,23 +67,23 @@ def run_simulation():
     plt.savefig(os.path.join(SEK, "telemetri_dogrulama.png"), dpi=150)
     plt.close()
 
-    # 2. Grafik: CAN Bus Hata Durum Makinesi ve Bus-Off Kurtarma
+
     tec = []
     state = []
     curr_tec = 0
-    curr_state = 1 # Active
+    curr_state = 1
 
     for i in range(N):
         if 40 <= i < 70:
-            # Yapay ACK hatası / gürültü (TEC +8 artar)
+
             curr_tec = min(255, curr_tec + 8)
         elif 70 <= i < 110:
-            # Bus-off durumu ve kurtarma sekansı (128 x 11 resesif bit beklenir)
+
             if curr_tec >= 255:
-                curr_state = 3 # Bus-Off
+                curr_state = 3
             curr_tec = max(0, curr_tec - 10)
         else:
-            # Normal başarılı iletim (TEC -1 azalır)
+
             curr_tec = max(0, curr_tec - 1)
             curr_state = 1 if curr_tec < 96 else 2
 

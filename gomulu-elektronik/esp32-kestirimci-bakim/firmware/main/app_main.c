@@ -1,11 +1,4 @@
-/*
- * Author : Hakan OĞUZ - Elektrik Elektronik Mühendisi
- * Project: ESP32 Kestirimci Bakım Düğümü (Titreşim ve MCSA Teşhisi)
- * Date   : 2026-10-27
- * License: MIT
- * Desc   : FreeRTOS titreşim/akım toplama, FFT teşhis görevi ve MQTT/Modbus alarm yönetimi
- */
-
+// Hakan OĞUZ - Elektrik Elektronik Mühendisi
 #include <stdio.h>
 #include <string.h>
 
@@ -23,7 +16,7 @@ static const char *TAG = "PRED_MAINT";
 static void predictive_maintenance_task(void *pvParameters)
 {
     bearing_fault_freqs_t bearing;
-    /* 6208 Rulmanı: Nb=9, d=12mm, D=60mm, RPM=1450 */
+
     bearing_calc_freqs(9, 12.0f, 60.0f, 0.0f, 1450.0f, &bearing);
 
     ESP_LOGI(TAG, "Rulman Frekanslari -> 1X: %.2f Hz, BPFO: %.2f Hz, BPFI: %.2f Hz",
@@ -32,8 +25,7 @@ static void predictive_maintenance_task(void *pvParameters)
     float accel_buffer[FFT_SIZE];
 
     while (1) {
-        /* I2S / SPI üzerinden ivmeölçer DMA tamponunu oku */
-        /* ... */
+
 
         float v_rms = compute_vibration_velocity_rms(accel_buffer, FFT_SIZE, 1.0f / SAMPLING_FREQ_HZ);
         iso_vibration_zone_t zone = ISO_ZONE_A_GOOD;

@@ -1,9 +1,4 @@
-# Author : Hakan OGUZ - Elektrik Elektronik Muhendisi
-# Project: Three-phase energy analyzer node - validation report
-# Date   : 2026-10-22
-# License: MIT
-# Desc   : Compares the firmware DSP output (fw_results.csv) with the numpy reference
-#          (reference.json) and renders a validation figure.
+# Hakan OĞUZ - Elektrik Elektronik Mühendisi
 import os
 import json
 import csv
@@ -41,7 +36,7 @@ print("\nmax relative error (phase A): %.2e" % maxerr)
 print("3-phase P firmware=%.1f W  reference=%.1f W" %
       (float(fw["TOTAL"]["p"]), ref["TOTAL"]["p"]))
 
-# validation figure: relative error per metric (log scale)
+
 labels = [r[0] for r in rows]
 errs = [max(r[3], 1e-12) for r in rows]
 fig, ax = plt.subplots(figsize=(9, 4.2))

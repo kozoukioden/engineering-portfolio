@@ -1,10 +1,4 @@
-/*
- * Author : Hakan OGUZ - Elektrik Elektronik Muhendisi
- * Project: Three-phase energy analyzer node (ESP32 / ESP-IDF)
- * Date   : 2026-10-22
- * License: MIT
- * Desc   : Implementation of the per-phase power metrics (RMS, P/S/Q, PF, THD).
- */
+// Hakan OĞUZ - Elektrik Elektronik Mühendisi
 #include "power_metrics.h"
 #include <math.h>
 #include <stddef.h>
@@ -13,12 +7,7 @@
 #define M_PI 3.14159265358979323846
 #endif
 
-/*
- * Harmonic amplitude by correlation with sin/cos at harmonic order h.
- * The window spans an integer number of cycles, so each harmonic falls on an exact
- * DFT bin and no windowing is needed. The returned value is the peak amplitude of
- * that harmonic (not RMS); ratios used for THD are amplitude-independent of that choice.
- */
+
 static float harmonic_amp(const float *x, int n, int samples_per_cycle, int h)
 {
     double sc = 0.0, ss = 0.0;
@@ -33,7 +22,7 @@ static float harmonic_amp(const float *x, int n, int samples_per_cycle, int h)
     return (float)sqrt(sc * sc + ss * ss);
 }
 
-/* THD = sqrt(sum_{h=2..H} A_h^2) / A_1 . Returns 0 if the fundamental is ~0. */
+
 static float thd_of(const float *x, int n, int samples_per_cycle, float *fund_out)
 {
     const float a1 = harmonic_amp(x, n, samples_per_cycle, 1);
@@ -67,7 +56,7 @@ int pm_compute_phase(const float *v, const float *i, int n,
     const float p    = (float)(sp / (double)n);
     const float s    = vrms * irms;
     float q2 = s * s - p * p;
-    if (q2 < 0.0f) q2 = 0.0f;   /* clamp numerical noise */
+    if (q2 < 0.0f) q2 = 0.0f;
 
     out->v_rms        = vrms;
     out->i_rms        = irms;
