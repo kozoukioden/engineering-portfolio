@@ -15,6 +15,11 @@ venv/
 
 # Meta / iç dosyalar (proje koduyla ilgisi yok)
 PORTFOY-URETIM-KILAVUZU.md
+AGENTS.md
+GEMINI.md
+# Antigravity çalışma alanı (kendi ayrı git deposu var, ana repoya karışmaz)
+antigravity/
+CLAUDE.md
 onay-*.md
 plan-*.md
 notlar-*.md
@@ -56,3 +61,5 @@ autocad/**/src/
 *.dsn
 *.ses
 x.kicad_*
+.vscode/
+Muhendislik_Kariyeri_ve_Kriz_Yonetimi.pdf
