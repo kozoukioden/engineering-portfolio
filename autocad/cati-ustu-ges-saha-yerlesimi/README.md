@@ -59,7 +59,7 @@ V_oc(−10°C) = 49,5 · [1 + (−0,0027)·(−10 − 25)]
 
 ```
 N_max = 1100 / 54,18 = 20,3  →  N = 20 modül/string
-String V_oc(−10°C) = 20 · 54,18 = 1083,6 V  <  1100 V   ✓
+String V_oc(−10°C) = 20 · 54,18 = 1083,6 V  <  1100 V
 ```
 
 ### 2) MPPT penceresi (yüksek sıcaklıkta alt sınır)
@@ -69,8 +69,8 @@ En sıcak çalışmada (hücre ≈ 70 °C) MPP gerilimi düşer. V_mp sıcaklık
 
 ```
 V_mp(70°C) = 41,7 · [1 + (−0,0034)·(70 − 25)] = 41,7 · 0,847 = 35,3 V/modül
-String V_mp(70°C) = 20 · 35,3 = 706 V   >  MPPT alt sınırı 200 V   ✓
-String V_mp(25°C) = 20 · 41,7 = 834 V   (MPPT penceresi 200–1000 V içinde)   ✓
+String V_mp(70°C) = 20 · 35,3 = 706 V   >  MPPT alt sınırı 200 V
+String V_mp(25°C) = 20 · 41,7 = 834 V   (MPPT penceresi 200–1000 V içinde)
 ```
 
 String çalışma gerilimi tüm sıcaklık aralığında MPPT penceresinde kalır.
@@ -147,13 +147,4 @@ katmanlar, antet ve ölçülendirme korunur.
 
 ![AG tek hat şeması](sekiller/tek-hat-semasi.png)
 
-## Sınırlamalar
-
-- Çizimler **ön tasarım/avan proje** düzeyindedir; uygulama projesi için çatı statiği, ayrıntılı
-  kablo kesiti/gerilim düşümü hesabı ve yerel dağıtım şirketi (bağlantı anlaşması) gereksinimleri
-  ayrıca ele alınmalıdır.
-- Üretim (kWh) simülasyonu bu çalışmanın kapsamı dışındadır; odak elektriksel tasarım ve
-  yerleşimdir. Sıcaklık katsayıları ve uç sıcaklıklar tipik kabul değerleridir.
-
----
-Lisans: MIT — bkz. depo kökündeki `LICENSE`.
+Lisans: MIT (bkz. depo kökü).

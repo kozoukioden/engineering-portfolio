@@ -1,107 +1,61 @@
 # Üç Fazlı Enerji Analizörü Düğümü (ESP32 / ESP-IDF)
 
-ESP32 üzerinde çalışan, üç fazlı gerilim ve akım dalga biçimlerinden **gerçek RMS, aktif/görünür/
-reaktif güç, güç faktörü ve toplam harmonik bozulumu (THD)** hesaplayan ve sonuçları **Modbus TCP**
-ile yayınlayan bir enerji ölçüm düğümü. Sinyal işleme çekirdeği, taşınabilir C olarak yazılmış ve
-aynı kaynak kod host tarafında (gcc) sentetik dalga biçimlerine karşı doğrulanmıştır.
+Üç fazlı gerilim ve akım dalga biçimlerinden gerçek RMS, aktif/görünür/reaktif güç, güç faktörü
+ve toplam harmonik bozulum (THD) hesaplayan, sonuçları Modbus TCP ile yayınlayan bir ölçüm düğümü.
+Sinyal işleme çekirdeği taşınabilir C'dir; aynı kaynak host'ta (gcc) sentetik dalga biçimleriyle
+koşturulup bağımsız bir numpy referansıyla karşılaştırılır.
 
-Geliştiren: **Hakan OĞUZ — Elektrik Elektronik Mühendisi**
-
-> Dürüstlük notu: DSP çekirdeği (`power_metrics.c`) host'ta bağımsız bir referansa karşı
-> **doğrulanmıştır** (aşağıdaki sonuçlara bakın). ESP-IDF firmware'i **tasarım/geliştirme
-> düzeyindedir; fiziksel karta yüklenip test edilmemiştir.** "Karta yükledim" denmez.
+Hakan OĞUZ — Elektrik Elektronik Mühendisi
 
 ![Faz A gerilim ve akım](sekiller/waveforms.png)
 
-## Neden bu proje
-
-Fabrikalarda ve binalarda enerji izleme, güç kalitesi (özellikle harmonikler) ve verimlilik için
-üç fazlı ölçüm düğümleri yaygındır. Burada amaç, ticari bir enerji analizörünün çekirdek ölçüm
-işlevini — örnekleme, RMS/güç hesabı ve THD kestirimi — sıfırdan, gömülü bir hedefte koşacak
-biçimde ve **doğruluğu kanıtlanmış** olarak tasarlamaktır.
-
 ## Ölçüm teorisi
 
-**Örnekleme penceresi.** Mains 50 Hz; çevrim başına 256 örnek, 10 çevrimlik pencere →
-pencere başına **N = 2560 örnek**, kanal başına örnekleme hızı 12,8 kHz. Pencerenin tam sayıda
-çevrim içermesi, her harmoniğin ayrık Fourier bininin tam üstüne düşmesini sağlar; böylece
-pencereleme (windowing) gerekmez ve sızıntı (spectral leakage) oluşmaz.
-
-**Gerçek RMS.** Dalga biçiminin tüm harmoniklerini kapsayacak biçimde örneklerden:
+50 Hz şebeke, çevrim başına 256 örnek, 10 çevrimlik pencere: N = 2560 örnek, kanal başına 12,8 kHz.
+Pencere tam sayıda çevrim içerdiğinden her harmonik ayrık Fourier binine oturur, pencereleme
+gerekmez ve sızıntı oluşmaz.
 
 ```
 Vrms = sqrt( (1/N) Σ v[k]² )        Irms = sqrt( (1/N) Σ i[k]² )
+P    = (1/N) Σ v[k]·i[k]   [W]       S = Vrms·Irms   [VA]
+Q    = sqrt( S² − P² )     [var]     PF = P / S
 ```
 
-**Güçler.**
+PF gerçek güç faktörüdür; harmonik bozulum onu temel bileşen yer değiştirme faktörünün (cos φ₁)
+altına çeker (cos φ₁ = 0,900 iken PF = 0,897). THD için her h harmoniğinin genliği, dalga biçiminin
+o frekanstaki sin/cos ile korelasyonundan bulunur (harmonik başına tek DFT bini, Goertzel mantığı):
 
 ```
-P (aktif)     = (1/N) Σ v[k]·i[k]          [W]   (tüm ortak harmoniklerin katkısını içerir)
-S (görünür)   = Vrms · Irms                 [VA]
-Q (reaktif)   = sqrt( S² − P² )             [var] (gerçek RMS tanımıyla "non-active")
-PF            = P / S
-```
-
-PF burada **gerçek güç faktörüdür**; harmonik bozulum PF'yi temel bileşen yer değiştirme güç
-faktörünün (cos φ₁) altına çeker. Doğrulamada bu etki görülür (cos φ₁ = 0,900 iken PF = 0,897).
-
-**THD (harmonik korelasyonu).** Her `h` harmoniği için genlik, dalga biçiminin o frekanstaki
-sin/cos ile korelasyonundan bulunur:
-
-```
-A_h = (2/N) · sqrt( (Σ x[k]·cos(2π h k / spc))² + (Σ x[k]·sin(2π h k / spc))² )
+A_h = (2/N)·sqrt( (Σ x[k]·cos(2π h k / spc))² + (Σ x[k]·sin(2π h k / spc))² )
 THD = sqrt( Σ_{h=2..15} A_h² ) / A_1
 ```
 
-Bu, harmonik başına tek bir DFT bini hesaplamaya eşdeğerdir (Goertzel mantığı) ve tüm FFT'den
-çok daha hafiftir — gömülü hedef için uygundur.
-
-## Mimari
+## Analog ön uç ve mimari
 
 ```
-  3F Gerilim ──[dirençli bölücü]──┐
-  3F Akım   ──[akım trafosu + burden]──┐
-                                       ├─► ESP32 ADC (sürekli/DMA, 6 kanal, 12.8 kHz/kanal)
-                                       │
-        power_metrics.c (RMS, P/S/Q, PF, THD)  ◄── ham sayımlar -> V/A ölçekleme (kalibrasyon)
-                                       │
-                         Modbus TCP giriş register'ları (port 502)
-                                       │
-                         SCADA / PLC / izleme yazılımı
+3F Gerilim → ZMPT101B VT ─┐
+3F Akım    → CT (SCT-013) ─┤→ VREF=3V3/2 bias + RC anti-alias → ESP32 ADC (6 kanal, 12,8 kHz/kanal)
+                           │
+          power_metrics.c (RMS, P/S/Q, PF, THD) → Modbus TCP giriş register'ları (port 502) → SCADA/PLC
 ```
 
-Analog ön uç: gerilim için **gerilim trafosu (ZMPT101B)**, akım için **akım trafosu (CT / SCT-013)**;
-her ikisi de orta-rayda (VREF = 3V3/2) biaslanıp RC anti-alias filtreden geçerek ADC'ye verilir.
-ADC ham sayımları, `app_main.c` içindeki `V_SCALE`/`I_SCALE` kalibrasyon katsayılarıyla gerçek
-birimlere çevrilir.
+Gerilim için ZMPT101B gerilim trafosu, akım için akım trafosu (SCT-013). Her ikisi de orta-raya
+(VREF = 3V3/2) biaslanıp RC anti-alias filtreden geçer. ADC ham sayımları `app_main.c` içindeki
+`V_SCALE`/`I_SCALE` katsayılarıyla gerçek birimlere çevrilir.
 
-## Devre şeması (KiCad)
+## Devre şeması ve PCB (KiCad 10)
 
-Üç fazlı ölçüm ön-ucunun tam şeması `donanim/analizor.kicad_sch` içinde (KiCad 10). ERC temiz
-(0 ihlal). 3 gerilim + 3 akım kanalı, VREF bias üreteci, AMS1117-3.3 regülatör, ESP32-WROOM-32 ve
-UART/boot programlama başlığından oluşur; ADC pin ataması firmware ile birebir aynıdır
-(VA=IO36, IA=IO39, VB=IO34, IB=IO35, VC=IO32, IC=IO33).
+Ölçüm ön-ucunun şeması `donanim/analizor.kicad_sch`: 3 gerilim + 3 akım kanalı, VREF bias üreteci,
+AMS1117-3.3 regülatör, ESP32-WROOM-32 ve UART/boot başlığı. ADC pin ataması firmware ile birebir
+(VA=IO36, IA=IO39, VB=IO34, IB=IO35, VC=IO32, IC=IO33). ERC: 0 ihlal.
+
+Şemadan türetilen 2 katmanlı kart `donanim/analizor.kicad_pcb`: işlevsel kümelenmiş yerleşim,
+iki tarafta GND dökümü, 124×104 mm, köşelerde M3 montaj deliği, ESP32 anten keepout alanı bakırsız.
+DRC: 0 ihlal. Üretim çıktıları `donanim/fabrikasyon/` (Gerber + Excellon drill), BOM
+`donanim/analizor-bom.csv`, şema baskısı `donanim/analizor.pdf`.
 
 ![Devre şeması](donanim/sema.png)
-
-Dosyalar: `analizor.kicad_sch` (şema), `analizor.kicad_pro` (proje), `analizor.pdf` (baskı),
-`analizor-bom.csv` (malzeme listesi). Doğrudan KiCad'de açılıp düzenlenebilir.
-
-## PCB (2 katman)
-
-Şemadan türetilen 2 katmanlı baskı devre kartı `donanim/analizor.kicad_pcb` içindedir. Yerleşim
-işlevsel kümelere göre yapılmış (ESP32 merkezde, gerilim/akım kanalları çevrede, bağlantılar
-kenarlarda), yönlendirme tamamlanmış ve iki tarafta **GND bakır dökümü** eklenmiştir. **DRC temiz
-(0 ihlal).** Kart 124 × 104 mm, köşelerde M3 montaj delikleri; ESP32-WROOM anten keepout alanı
-bakırsız bırakılmıştır.
-
 ![PCB 3B görünüm](donanim/pcb-3d.png)
-
-![PCB katmanlar](donanim/pcb-katmanlar.png)
-
-Üretime hazır **Gerber + delik (Excellon)** dosyaları `donanim/fabrikasyon/` altındadır
-(F.Cu, B.Cu, maske, pasta, ipek baskı, Edge.Cuts, `.drl`, `.gbrjob`). Kart KiCad 10'da açılıp
-düzenlenebilir.
 
 ## Modbus TCP register haritası (giriş register'ları, uint16)
 
@@ -109,52 +63,50 @@ Her faz 8 register: `Vrms×10`, `Irms×100`, `P`, `S`, `Q`, `PF×1000`, `THDv×1
 
 | Offset | İçerik | Offset | İçerik |
 |---|---|---|---|
-| 0–7   | Faz A bloğu | 16–23 | Faz C bloğu |
-| 8–15  | Faz B bloğu | 24–27 | P_top, S_top, Q_top, PF_top×1000 |
+| 0–7  | Faz A | 16–23 | Faz C |
+| 8–15 | Faz B | 24–27 | P_top, S_top, Q_top, PF_top×1000 |
 
 ## Firmware derleme (ESP-IDF)
 
 ```bash
 cd firmware
 idf.py set-target esp32
-idf.py menuconfig          # Wi-Fi SSID/parola (Energy analyzer node configuration)
+idf.py menuconfig          # Wi-Fi SSID/parola
 idf.py build flash monitor
 ```
 
-`espressif/esp-modbus` bileşeni, bileşen yöneticisi tarafından `idf_component.yml`'den otomatik
-çekilir.
+`espressif/esp-modbus` bileşeni `idf_component.yml`'den otomatik çekilir.
 
-## Host doğrulaması (DSP çekirdeği)
+## Host doğrulaması
 
-Gerçek firmware DSP kodu (`power_metrics.c`), host'ta derlenip bilinen harmonik içerikli sentetik
-üç fazlı sinyallerle beslenir ve bağımsız bir numpy referansıyla karşılaştırılır:
+DSP çekirdeği host'ta derlenip bilinen harmonik içerikli sentetik üç fazlı sinyallerle beslenir,
+numpy referansıyla karşılaştırılır:
 
 ```bash
 cd sim
-python gen_signals.py                                  # sinyal + referans + grafikler
-gcc -O2 -std=c11 host_test.c \
-    ../firmware/components/power_metrics/power_metrics.c \
+python gen_signals.py
+gcc -O2 -std=c11 host_test.c ../firmware/components/power_metrics/power_metrics.c \
     -I../firmware/components/power_metrics -lm -o host_test
-./host_test samples.csv 256                            # firmware DSP'yi host'ta koşar
-python compare.py                                      # karşılaştırma + doğrulama grafiği
+./host_test samples.csv 256
+python compare.py
 ```
 
-**Test senaryosu:** 230 V faz-nötr gerilim (3., 5., 7. harmonikler), 20 A akım, temel PF 0,90
-geri (5., 7., 11. akım harmonikleri). Sonuçlar:
+Senaryo: 230 V faz-nötr (3., 5., 7. harmonikler), 20 A akım, temel PF 0,90 geri (5., 7., 11. akım
+harmonikleri).
 
-| Büyüklük | Firmware (C) | Referans (numpy) | Analitik |
-|---|---|---|---|
-| Vrms (Faz A) | 230,109 V | 230,109 V | — |
-| Irms (Faz A) | 20,098 A | 20,098 A | — |
-| P (Faz A) | 4149,7 W | 4149,7 W | — |
-| S (Faz A) | 4624,7 VA | 4624,7 VA | — |
-| PF (Faz A) | 0,8973 | 0,8973 | <0,90 (bozulum) |
-| THD_v | %3,082 | %3,082 | **%3,082** |
-| THD_i | %9,899 | %9,899 | **%9,899** |
-| P (3 faz) | 12 449 W | 12 449 W | — |
+| Büyüklük | Firmware (C) | Referans (numpy) |
+|---|---|---|
+| Vrms (Faz A) | 230,109 V | 230,109 V |
+| Irms (Faz A) | 20,098 A | 20,098 A |
+| P (Faz A) | 4149,7 W | 4149,7 W |
+| S (Faz A) | 4624,7 VA | 4624,7 VA |
+| PF (Faz A) | 0,8973 | 0,8973 |
+| THD_v | %3,082 | %3,082 |
+| THD_i | %9,899 | %9,899 |
+| P (3 faz) | 12 449 W | 12 449 W |
 
-Firmware DSP ile referans arasındaki **maksimum bağıl hata 6,7×10⁻⁵** (float32/float64 farkı),
-ve THD değerleri enjekte edilen harmonik içerikle **analitik olarak** birebir uyuşur.
+Firmware ile referans arasında maksimum bağıl hata 6,7×10⁻⁵ (float32/float64). THD değerleri enjekte
+edilen harmonik içerikle birebir uyuşur.
 
 ![Akım harmonik spektrumu](sekiller/spectrum.png)
 ![Firmware DSP doğrulaması](sekiller/validation.png)
@@ -162,27 +114,10 @@ ve THD değerleri enjekte edilen harmonik içerikle **analitik olarak** birebir 
 ## Dosya düzeni
 
 ```
-donanim/                   KiCad 10 tasarımı: şema (.kicad_sch/.pro/.pdf+BOM), PCB (.kicad_pcb),
-                           renderlar (pcb-3d/pcb-katmanlar/sema .png), fabrikasyon/ (Gerber+drill)
-firmware/
-  main/app_main.c          ADC + Modbus + ölçüm görevi
-  main/net_connect.c/.h    Wi-Fi istasyon getirme
-  components/power_metrics/ taşınabilir DSP çekirdeği (host + ESP32 ortak)
-sim/
-  gen_signals.py           sentetik sinyal + numpy referans + grafikler
-  host_test.c              gerçek C çekirdeğini host'ta koşan test
-  compare.py               doğrulama raporu + grafik
-makale/                    İngilizce akademik makale (.tex + .pdf)
+donanim/      KiCad şeması + PCB + renderlar + fabrikasyon (Gerber/drill) + BOM
+firmware/     ESP-IDF uygulaması (ADC + Modbus), power_metrics çekirdeği
+sim/          sentetik sinyal üreteci, host testi, karşılaştırma
+makale/       İngilizce makale (.tex + .pdf)
 ```
 
-## Sınırlamalar
-
-- Firmware fiziksel donanımda çalıştırılmamıştır; ADC zamanlaması ve kalibrasyon katsayıları
-  devreye alma (commissioning) sırasında ölçülmelidir.
-- Reaktif güç, gerçek RMS "non-active" tanımıyla hesaplanır; temel bileşen bazlı Q (Budeanu/IEEE
-  1459 ayrıştırması) ayrıca eklenebilir.
-- Doğrulama, bilinen sentetik sinyallerle yapılmıştır; gerçek şebeke ölçümüyle saha doğrulaması
-  kapsam dışıdır.
-
----
-Lisans: MIT — bkz. depo kökündeki `LICENSE`.
+Lisans: MIT (bkz. depo kökü).
