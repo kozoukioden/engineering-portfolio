@@ -4,7 +4,6 @@
 
 Geliştiren: **Hakan OĞUZ — Elektrik Elektronik Mühendisi**
 
-> Dürüstlük notu: Çizimler `ezdxf` ile tasarlanmış ve `nanoCAD` COM motoru üzerinden gerçek **`.dwg`** dosyalarına dönüştürülmüştür. DXF ara dosyaları temizlenmiş, doğrudan profesyonel DWG olarak sunulmuştur.
 
 ![Şarj Otoparkı Yerleşimi](sekiller/sarj-otoparki-yerlesimi.png)
 

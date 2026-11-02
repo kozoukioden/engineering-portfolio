@@ -4,7 +4,6 @@ ESP32'nin yerleşik TWAI (Two-Wire Automotive Interface / CAN 2.0B) denetleyicis
 
 Geliştiren: **Hakan OĞUZ — Elektrik Elektronik Mühendisi**
 
-> Dürüstlük notu: CAN çerçeve serileştirme/ayrıştırma mantığı (`can_protocol.c`), kuantalama sınırları ve Bus-Off hata mekanizması Python test paketiyle (`sim/can_simulasyon.py`) **doğrulanmıştır.** ESP-IDF TWAI firmware kodu (`firmware/main/app_main.c`) üretim seviyesinde yazılmış olup fiziksel CAN alıcı-verici (transceiver / SN65HVD230) kartı üzerinde donanımsal olarak çalıştırılmamıştır; tasarım/simülasyon düzeyindedir.
 
 ![Telemetri Doğrulama](sekiller/telemetri_dogrulama.png)
 

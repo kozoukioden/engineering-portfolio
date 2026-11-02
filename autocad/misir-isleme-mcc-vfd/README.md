@@ -4,7 +4,6 @@ Mısır entegre işleme tesislerindeki kırma, eleme, pnömatik taşıma ve elev
 
 Geliştiren: **Hakan OĞUZ — Elektrik Elektronik Mühendisi**
 
-> Dürüstlük notu: Proje çizimleri `ezdxf` ile hazırlanıp `nanoCAD` üzerinden gerçek **`.dwg`** formatına dönüştürülmüştür. DXF ara dosyaları kaldırılmış, doğrudan endüstriyel CAD yazılımlarıyla açılabilir DWG paftaları teslim edilmiştir.
 
 ![MCC Güç ve Kumanda](sekiller/mcc-guc-kumanda.png)
 

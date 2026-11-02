@@ -4,7 +4,6 @@
 
 Geliştiren: **Hakan OĞUZ — Elektrik Elektronik Mühendisi**
 
-> Dürüstlük notu: Çizimler `ezdxf` kütüphanesiyle Python üzerinden doğrudan AutoCAD R2010 DXF standardında üretilmiş, katmanlar, çizgi tipleri ve antetler teknik çizim kurallarına uygun olarak hazırlanmıştır. nanoCAD veya AutoCAD ile doğrudan açılıp düzenlenebilir.
 
 ![Tek Hat Şeması](sekiller/tek-hat-semasi.png)
 

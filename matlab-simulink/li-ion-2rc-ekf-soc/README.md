@@ -4,7 +4,6 @@
 
 Geliştiren: **Hakan OĞUZ — Elektrik Elektronik Mühendisi**
 
-> Dürüstlük notu: 2RC dinamik modeli, OCV polinom türetimi ve EKF durum uzayı filtrelemesi MATLAB R2025b ortamında (`simule_et.m`) **sayısal olarak koşturulmuş ve doğrulanmıştır.** Fiziksel batarya hücresi veya Biologic/Arbin test cihazı ile donanımsal ölçüm yapılmamıştır; çalışma simülasyon düzeyindedir.
 
 ![EKF SOC Kestirimi](sekiller/ekf_soc_kestirimi.png)
 

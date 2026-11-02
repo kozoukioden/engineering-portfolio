@@ -4,7 +4,6 @@ Endüstriyel tesisler için IEC 62305 standardına uygun Sınıf II Dış Yıld�
 
 Geliştiren: **Hakan OĞUZ — Elektrik Elektronik Mühendisi**
 
-> Dürüstlük notu: Proje çizimleri `ezdxf` ile AutoCAD R2010 DXF formatında programatik üretilmiştir. Projede yer alan analitik topraklama direnci ($R < 1.0\ \Omega$) ve yuvarlanan küre ($r = 30\text{ m}$) hesapları IEC standartlarına göre formülize edilmiştir. Çizimler nanoCAD ve AutoCAD ortamlarında doğrudan açılabilir.
 
 ![Çatı Yakalama Ağı ve LPS](sekiller/cati-lps-plani.png)
 

@@ -4,7 +4,6 @@ Endüstriyel asenkron motorlar için ivmeölçer tabanlı mekanik titreşim anal
 
 Geliştiren: **Hakan OĞUZ — Elektrik Elektronik Mühendisi**
 
-> Dürüstlük notu: DSP teşhis algoritmaları (`dsp_diagnostics.c`), rulman geometrik frekans hesabı ve Hilbert zarf demodülasyonu Python simülasyon ortamında sentetik arızalı sinyallerle **doğrulanmıştır.** ESP-IDF FreeRTOS firmware katmanı üretim standartlarında yazılmış olup fiziksel motor yatağı üzerinde piezoelektrik ivmeölçer ile test edilmemiştir; tasarım ve simülasyon düzeyindedir.
 
 ![Rulman Titreşimi ve Zarf Analizi](sekiller/rulman_titresim_zarf_analizi.png)
 

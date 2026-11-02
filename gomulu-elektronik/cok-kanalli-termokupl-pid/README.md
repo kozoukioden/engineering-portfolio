@@ -4,7 +4,6 @@ MAX31856 SPI soğuk-uç telafili dönüştürücü entegreleri üzerinden çok k
 
 Geliştiren: **Hakan OĞUZ — Elektrik Elektronik Mühendisi**
 
-> Dürüstlük notu: MAX31856 19-bit çözünürlüklü sıcaklık ayrıştırma formülü ve clamping tipi anti-windup PID denetleyicisi Python test ortamında (`sim/pid_simulasyon.py`) birinci dereceden termal gecikmeli sistem modeli üzerinde **doğrulanmıştır.** ESP-IDF FreeRTOS firmware katmanı (`firmware/main/app_main.c`) üretim kalitesinde yazılmış olup fiziksel PCB ve rezistans üzerinde donanımsal olarak çalıştırılmamıştır; tasarım ve simülasyon düzeyindedir.
 
 ![PID Sıcaklık Yanıtı](sekiller/pid_sicaklik_yaniti.png)
 

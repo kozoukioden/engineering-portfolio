@@ -4,7 +4,6 @@
 
 Geliştiren: **Hakan OĞUZ — Elektrik Elektronik Mühendisi**
 
-> Dürüstlük notu: Kinematik ve yörünge modeli MATLAB R2025b / Simulink ortamında (`model/robot_yorunge_denetimi.slx`) **sayısal olarak koşturulmuş ve doğrulanmıştır.** Fiziksel manipülatör veya motor sürücüleri üzerinde donanım testi yapılmamıştır; çalışma simülasyon düzeyindedir.
 
 ![3B Robot Yörüngesi](sekiller/robot_3b_yorunge.png)
 

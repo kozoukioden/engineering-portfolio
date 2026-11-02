@@ -4,7 +4,6 @@
 
 Geliştiren: **Hakan OĞUZ — Elektrik Elektronik Mühendisi**
 
-> Dürüstlük notu: LC anten rezonansı ($f_{res} = 125.0\text{ kHz}, Q = 65.4$), Manchester darbe zamanlaması ($RF/64 = 1953\text{ baud}$) ve 64-bit çerçeve parite doğrulaması Python test ortamında (`sim/rfid_simulasyon.py`) ve C çekirdeğinde (`em4100_decoder.c`) **doğrulanmıştır.** KiCad şeması (`donanim/em4100_rfid.kicad_sch` ve `.pdf`) hazırlanmış olup fiziksel bobin sarımı ve donanımsal okuma yapılmamıştır; çalışma tasarım ve simülasyon düzeyindedir.
 
 ![Anten Rezonans Eğrisi](sekiller/anten_rezonans_egrisi.png)
 

@@ -4,7 +4,6 @@ Saha seviyesindeki PLC ve enerji sayaçlarından Modbus RTU/TCP ile telemetri ve
 
 Geliştiren: **Hakan OĞUZ — Elektrik Elektronik Mühendisi**
 
-> Dürüstlük notu: Store-and-forward mantığı, yerel arabellekleme ve ağ kopması senaryosu Python simülasyonuyla (`sim/dogrula.py`) **test edilmiş ve doğrulanmıştır.** RPi ortamı için `Dockerfile` hazırlanmıştır; ancak yerel bilgisayarda Docker Daemon kurulu/çalışır durumda olmadığından container olarak ayağa kaldırılmamıştır, "Docker üzerinde çalıştırıldı" denmez.
 
 ![Store-and-Forward Doğrulama](sekiller/store_and_forward_dogrulama.png)
 

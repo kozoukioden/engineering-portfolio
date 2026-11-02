@@ -106,4 +106,3 @@ Ham RSSI tabanlı trilaterasyon çok yollu dalgalanmalar nedeniyle ani sıçrama
 
 1. **İvmeölçer Sürüklenmesi (Drift):** Düşük maliyetli MEMS sensörlerdeki sabit bias değeri çift integrasyon sonucu konumda kuadratik sapmaya neden olur. Bu mimaride BLE ölçüm güncellemeleri bu sürüklenmeyi düzenli olarak sıfırlar; ancak BLE sinyali 3 saniyeden uzun kesilirse IMU sürüklenmesi hızla artar.
 2. **Multipath ve İnsan Gövdesi Zayıflatması:** 2.4 GHz radyo işaretleri insan vücudu ve metal raflar tarafından 5-12 dB zayıflatılabilir. Gerçek saha kurulumlarında Kalman ölçüm varyansı $R_{ble}$ ortama göre dinamik (RSSI varyansına bağlı uyarlamalı) ayarlanmalıdır.
-3. **Doğrulama Notu:** Algoritma çekirdeği C kodları ve sayısal simülasyonlarla doğrulanmıştır; donanım üzerinde gerçek zamanlı test edilmemiştir.

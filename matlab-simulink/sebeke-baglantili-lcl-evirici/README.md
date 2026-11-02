@@ -4,7 +4,6 @@
 
 Geliştiren: **Hakan OĞUZ — Elektrik Elektronik Mühendisi**
 
-> Dürüstlük notu: Model ve kontrol döngüsü MATLAB R2025b / Simulink ortamında (`model/inverter_lcl_control.slx`) **sayısal olarak koşturulmuş ve doğrulanmıştır.** Fiziksel güç devresi veya dSPACE/DSP mikrodenetleyici üzerinde deneysel donanım testi yapılmamıştır; çalışma simülasyon düzeyindedir.
 
 ![Şebeke dalga şekilleri](sekiller/sebeke_dalga_sekilleri.png)
 
