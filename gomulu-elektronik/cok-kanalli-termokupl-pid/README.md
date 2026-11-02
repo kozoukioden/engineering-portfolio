@@ -52,6 +52,8 @@ cok-kanalli-termokupl-pid/
 │       └── app_main.c                # 4 kanallı SPI tarama ve PWM kontrol görevi
 ├── sim/
 │   └── pid_simulasyon.py             # Termal sistem simülasyonu ve basamak yanıt testi
+├── donanim/
+│   └── termokupl_pid.kicad_sch       # ESP32 + 4x MAX31856 + ısıtıcı sürücü şeması
 └── sekiller/
     ├── pid_sicaklik_yaniti.png
     └── cok_kanalli_termokupl_izleme.png
@@ -61,3 +63,14 @@ Doğrulama betiği terminalden çalıştırılabilir:
 ```bash
 python sim/pid_simulasyon.py
 ```
+
+## Donanım (KiCad)
+
+`donanim/termokupl_pid.kicad_sch`: ESP32-WROOM-32 ile dört adet MAX31856 termokupl-sayısal
+dönüştürücü ortak SPI hattında (SCK/MOSI/MISO paylaşımlı, CS pinleri GPIO15/16/17/18). Her kanalda
+termokupl girişinde 10 Ω seri direnç + 10 nF diferansiyel RC filtre ve AVDD/DVDD besleme köprüleme
+kondansatörleri var. Isıtıcı yükü 2N7002 MOSFET ile LEDC PWM (GPIO4) üzerinden sürülür; AMS1117-3.3
+regülatör 5 V girişi 3.3 V'a indirir. ERC: 0 ihlal. Şema baskısı `termokupl_pid.pdf`, malzeme listesi
+`termokupl_pid-bom.csv`.
+
+![Devre şeması](donanim/sema.png)
