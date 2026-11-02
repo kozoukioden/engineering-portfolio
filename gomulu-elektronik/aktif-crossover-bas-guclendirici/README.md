@@ -74,12 +74,3 @@ Düşük gürültülü **NE5532 / OPA2134** çift op-amp mimarisi sayesinde devr
 ![THD Spektrumu](sekiller/thd_harmonik_spektrum.png)
 
 - **Simüle Edilen THD Seviyesi:** %0.0187 (Temel bileşene göre 3. harmonik -75 dBFS seviyesindedir).
-
----
-
-## 4. Donanım ve CAD Dosyaları
-
-- **`kicad/crossover_sub_boost.kicad_sch`:** Tam şematik devre çizimi.
-- **`kicad/crossover_sub_boost.pdf`:** KiCad CLI ile ihraç edilmiş vektörel şematik çizim.
-- **`kicad/crossover_sub_boost.kicad_pcb`:** 100 mm x 60 mm çift yüzlü PCB kart yerleşimi.
-- **`kicad/BOM.csv`:** Parça numaraları ve kılıf detaylarını içeren endüstriyel malzeme listesi.

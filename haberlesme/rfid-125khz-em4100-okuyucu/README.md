@@ -31,10 +31,6 @@ Toplam 64 bit şu şekilde düzenlenmiştir:
 ```
 rfid-125khz-em4100-okuyucu/
 ├── README.md
-├── donanim/
-│   ├── em4100_rfid.kicad_pro   # KiCad 10 Proje dosyası
-│   ├── em4100_rfid.kicad_sch   # 125 kHz LC sürücü ve zarf dedektörü şeması
-│   └── em4100_rfid.pdf         # Şematik baskı çıktısı
 ├── firmware/
 │   ├── em4100_decoder.h        # EM4100 veri tipleri ve fonksiyon prototipleri
 │   └── em4100_decoder.c        # 2D parite ve Manchester çözücü kaynak kodu
