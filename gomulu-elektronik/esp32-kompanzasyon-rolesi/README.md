@@ -78,3 +78,15 @@ Klasik sıralı seçimde 1. kademe günde 60 kez anahtarlanırken, eşit yaşlan
 - `src/pfc_relay.h` ve `.c`: C99 standardında deterministik reaktif güç denetim çekirdeği.
 - `src/main.c`: Host test ve doğrulama programı.
 - `sim/dogrula_pfc.py`: 24 saatlik yük profili ve kontaktör ömrü simülasyon betiği.
+- `donanim/kompanzasyon.kicad_sch`: Kontrol kartının KiCad şeması.
+
+## 5. Donanım (KiCad)
+
+ESP32-WROOM-32'nin 12 GPIO çıkışı iki ULN2803A Darlington dizisini sürer; açık kolektör çıkışlar
+13 kutuplu klemens üzerinden 24 V kontaktör bobinlerine gider (bobin dönüş diyotları ULN2803A
+içindeki COM hattına bağlı). Şebeke gerilimi 100 kΩ seri dirençle ZMPT101K gerilim trafosuna,
+akım trafosu çıkışı 33 Ω yük direncine bağlanır; iki sinyal 3.3 V/2 öngerilim hattına göre IO34
+(VSENSE) ve IO35 (ISENSE) ADC girişlerinden okunur. ERC: 0 ihlal. Şema baskısı `kompanzasyon.pdf`,
+malzeme listesi `kompanzasyon-bom.csv`.
+
+![Devre şeması](donanim/sema.png)
