@@ -62,3 +62,5 @@ _tools/
 x.kicad_*
 .vscode/
 Muhendislik_Kariyeri_ve_Kriz_Yonetimi.pdf
+
+*.db
