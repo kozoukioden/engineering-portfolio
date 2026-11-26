@@ -106,3 +106,13 @@ Ham RSSI tabanlı trilaterasyon çok yollu dalgalanmalar nedeniyle ani sıçrama
 
 1. **İvmeölçer Sürüklenmesi (Drift):** Düşük maliyetli MEMS sensörlerdeki sabit bias değeri çift integrasyon sonucu konumda kuadratik sapmaya neden olur. Bu mimaride BLE ölçüm güncellemeleri bu sürüklenmeyi düzenli olarak sıfırlar; ancak BLE sinyali 3 saniyeden uzun kesilirse IMU sürüklenmesi hızla artar.
 2. **Multipath ve İnsan Gövdesi Zayıflatması:** 2.4 GHz radyo işaretleri insan vücudu ve metal raflar tarafından 5-12 dB zayıflatılabilir. Gerçek saha kurulumlarında Kalman ölçüm varyansı $R_{ble}$ ortama göre dinamik (RSSI varyansına bağlı uyarlamalı) ayarlanmalıdır.
+
+## 5. Donanım (KiCad)
+
+`donanim/ble_imu.kicad_sch`: ESP32-WROOM-32 (dahili BLE anteni) ve I2C hattında MPU-6050
+(SDA IO21, SCL IO22, INT IO25, AD0 toprakta → adres 0x68, 4.7 kΩ pull-up). MPU-6050'nin REGOUT
+ucunda 100 nF, CPOUT ucunda 2.2 nF datasheet kondansatörleri, VDD/VLOGIC köprüleme, AMS1117-3.3
+regülatör ve UART programlama başlığı. ERC: 0 ihlal. Şema baskısı `ble_imu.pdf`, malzeme listesi
+`ble_imu-bom.csv`.
+
+![Devre şeması](donanim/sema.png)
