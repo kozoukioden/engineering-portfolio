@@ -43,6 +43,8 @@ esp32-kestirimci-bakim/
 │       └── app_main.c               # FreeRTOS kestirimci bakım ve alarm üretim görevi
 ├── sim/
 │   └── dogrula.py                   # Sentetik arıza katarı üretimi ve zarf/MCSA test paketi
+├── donanim/
+│   └── kestirimci.kicad_sch         # ESP32 + ADXL343 + akım trafosu ön katı
 └── sekiller/
     ├── rulman_titresim_zarf_analizi.png
     └── mcsa_kirik_cubuk_spektrum.png
@@ -52,3 +54,12 @@ Doğrulama betiği doğrudan çalıştırılabilir:
 ```bash
 python sim/dogrula.py
 ```
+
+## Donanım (KiCad)
+
+`donanim/kestirimci.kicad_sch`: ESP32-WROOM-32, I2C hattında ADXL343 ivmeölçer (SDA IO21, SCL IO22,
+INT1 IO25, 4.7 kΩ pull-up), MCSA için akım trafosu girişi: 100 Ω yük direnci, 3.3 V/2 öngerilim
+bölücüsü ve 1 kΩ seri dirençle IO34 (ADC1_CH6) girişine bağlanır. AMS1117-3.3 regülatör ve UART
+programlama başlığı. ERC: 0 ihlal. Şema baskısı `kestirimci.pdf`, malzeme listesi `kestirimci-bom.csv`.
+
+![Devre şeması](donanim/sema.png)
