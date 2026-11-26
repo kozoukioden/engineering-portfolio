@@ -1,6 +1,6 @@
 # 125 kHz EM4100 RFID Okuyucu ve Manchester Kod Çözücü
 
-125 kHz LC rezonans anten sürücüsü, Schottky diyotlu tepe zarf dedektörü, aktif bant geçiren filtre ve EM4100 64-bit protokolüne uygun Manchester kod çözme ve 2D parite doğrulama algoritması.
+125 kHz LC rezonans anten sürücüsü, 1N4148 diyotlu tepe zarf dedektörü, aktif bant geçiren filtre ve EM4100 64-bit protokolüne uygun Manchester kod çözme ve 2D parite doğrulama algoritması.
 
 Geliştiren: **Hakan OĞUZ — Elektrik Elektronik Mühendisi**
 
@@ -34,6 +34,8 @@ rfid-125khz-em4100-okuyucu/
 ├── firmware/
 │   ├── em4100_decoder.h        # EM4100 veri tipleri ve fonksiyon prototipleri
 │   └── em4100_decoder.c        # 2D parite ve Manchester çözücü kaynak kodu
+├── donanim/
+│   └── rfid_okuyucu.kicad_sch  # Anten sürücü, zarf dedektörü ve LM358 ön katı
 ├── sim/
 │   └── rfid_simulasyon.py      # LC rezonans akım ve Manchester zamanlama simülatörü
 └── sekiller/
@@ -45,3 +47,16 @@ Doğrulama betiği doğrudan çalıştırılabilir:
 ```bash
 python sim/rfid_simulasyon.py
 ```
+
+## Donanım (KiCad)
+
+`donanim/rfid_okuyucu.kicad_sch`: ESP32 LEDC çıkışı (IO25) 125 kHz kare dalga üretir; MMBT3904/
+MMBT3906 tamamlayıcı emitör izleyici 10 Ω + 1.62 nF üzerinden 1 mH anten bobinini seri rezonansta
+sürer. Tank gerilimi 1N4148 ve 2.2 nF / 100 kΩ ile zarf olarak alınır, 100 nF ile DC'den ayrılıp
+2.5 V referansa oturtulur. LM358'in ilk yarısı yaklaşık 11 kat kazançlı (220 pF ile ~7 kHz üst kesim)
+yükselteç, ikinci yarısı kendi çıkışının 100 kΩ / 1 µF ortalamasını eşik alan karşılaştırıcıdır.
+Karşılaştırıcı çıkışı 10 kΩ / 20 kΩ bölücüyle 3.3 V seviyesine indirilip IO26'dan okunur ve
+`em4100_decoder.c` ile çözülür. ERC: 0 ihlal. Şema baskısı `rfid_okuyucu.pdf`, malzeme listesi
+`rfid_okuyucu-bom.csv`.
+
+![Devre şeması](donanim/sema.png)
